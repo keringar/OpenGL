@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game(Window &window, Input &input) : m_window(window), m_input(input) {
-    //Init input, renderer, audio, window
+    //Get input, renderer, audio, window
 }
 
 Game::~Game() {
