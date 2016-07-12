@@ -9,16 +9,20 @@ class Window {
 public:
     Window();
     ~Window();
-    
+
+    //Copy constructor
+    Window(const Window& win);
+
+    //Copy assignment
+    Window& operator=(const Window& win);
 
     bool init();
 
-    operator GLFWwindow *() const {
+    operator GLFWwindow*() const {
         return m_window;
     }
 
     bool isOpen();
-
     void close();
 
 private:

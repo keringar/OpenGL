@@ -6,7 +6,11 @@
 #include <GLFW/glfw3.h>
 
 enum class Event {
-    QUIT
+    QUIT,
+    MOVE_UP,
+    MOVE_RIGHT,
+    MOVE_DOWN,
+    MOVE_LEFT
 };
 
 class Input {

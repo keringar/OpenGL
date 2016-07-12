@@ -1,6 +1,6 @@
 #include "Window.h"
 
-void GLError(int error, const char *description) {
+void GLFWError(int error, const char *description) {
     Log::log(description, Log::Channels::Error);
 }
 
@@ -12,7 +12,24 @@ Window::~Window() {
     glfwTerminate();
 }
 
+//Copy constructor
+Window::Window(const Window& win) {
+    this->m_config = win.m_config;
+    this->m_window = win.m_window;
+}
+
+//Copy assignment operator
+Window& Window::operator=(const Window& win) {
+    this->m_window = win.m_window;
+    this->m_config = win.m_config;
+    return *this;
+}
+
 bool Window::init() {
+    glfwWindowHint(GLFW_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     int windowX = m_config.getAsInt("WindowSizeX");
     int windowY = m_config.getAsInt("WindowSizeY");
     bool vsync = m_config.getAsBool("V-Sync");
@@ -47,11 +64,11 @@ bool Window::init() {
         glfwSwapInterval(1);
     }
 
-    glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    glfwSetWindowSizeLimits(m_window, 800, 600, 100000, 100000);
 
-    glfwMakeContextCurrent(m_window);
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-    glfwSetErrorCallback(GLError);
+    glfwMakeContextCurrent(m_window);
+    glfwSetErrorCallback(GLFWError);
 
     return true;
 }

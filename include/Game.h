@@ -3,11 +3,11 @@
 
 #include "Window.h"
 #include "Input.h"
-#include <memory>
+#include "Renderer/Renderer.h"
 
 class Game {
 public:
-    Game(Window& window, Input& input);
+    Game(Window& window, Input& input, Renderer& renderer);
 
     ~Game();
 
@@ -22,6 +22,7 @@ public:
 private:
     Window m_window;
     Input m_input;
+    Renderer m_renderer;
 
 };
 

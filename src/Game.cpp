@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(Window& window, Input& input) : m_window(window), m_input(input) {
+Game::Game(Window& window, Input& input, Renderer& renderer) : m_window(window), m_input(input), m_renderer(renderer) {
     //Get input, renderer, audio, window
 }
 
@@ -18,8 +18,22 @@ void Game::HandleInput() {
 
     //Send events to registered listeners
     for (const auto& event : input_queue) {
-        if (event == Event::QUIT) {
-            m_window.close();
+        switch(event) {
+            case Event::QUIT:
+                m_window.close();
+                break;
+            case Event::MOVE_UP:
+
+                break;
+            case Event::MOVE_RIGHT:
+
+                break;
+            case Event::MOVE_DOWN:
+
+                break;
+            case Event::MOVE_LEFT:
+                glfwSetWindowSize(m_window, 640, 480);
+                break;
         }
     }
 }
@@ -29,19 +43,7 @@ void Game::Update() {
 }
 
 void Game::Render() {
-    //Get list of renderable objects
-    //Sort
-    //Render with respective renderers
-/*
-    GLfloat vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-    };
-
-    GLuint VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    */
+    std::vector<Renderable> render_queue();
+    m_renderer.submit(render_queue);
+    m_renderer.issueRenderCommands();
 }

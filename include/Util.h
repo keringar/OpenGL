@@ -24,6 +24,12 @@ public:
 
     ~Configuration();
 
+    //Copy constructor
+    Configuration(const Configuration& config){
+        this->m_name = config.m_name;
+        this->options = config.options;
+    }
+
     void add(std::string key, std::string value);
 
     //Returns value

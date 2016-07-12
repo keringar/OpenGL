@@ -11,6 +11,10 @@ Input::Input(Window &window) {
     m_config = Configuration("keys");
 
     event_map.emplace(Event::QUIT, convertToKeyCode(m_config.get("quit")));
+    event_map.emplace(Event::MOVE_UP, convertToKeyCode(m_config.get("move_up")));
+    event_map.emplace(Event::MOVE_RIGHT, convertToKeyCode(m_config.get("move_right")));
+    event_map.emplace(Event::MOVE_DOWN, convertToKeyCode(m_config.get("move_down")));
+    event_map.emplace(Event::MOVE_LEFT, convertToKeyCode(m_config.get("move_left")));
 }
 
 Input::~Input() {

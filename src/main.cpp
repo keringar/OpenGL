@@ -8,7 +8,10 @@ int main() {
     }
 
     //Initialize renderer
-
+    Renderer renderer;
+    if(!renderer.loadAll()){
+        return -1;
+    }
 
     //Initialize audio
 
@@ -17,7 +20,7 @@ int main() {
     Input input(window);
 
     //Pass window, renderer, audio and input to game
-    Game game(window, input);
+    Game game(window, input, renderer);
 
     //Game Loop
     while (game.isRunning()) {
