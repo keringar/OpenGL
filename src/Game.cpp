@@ -32,7 +32,7 @@ void Game::HandleInput() {
 
                 break;
             case Event::MOVE_LEFT:
-                glfwSetWindowSize(m_window, 640, 480);
+
                 break;
         }
     }

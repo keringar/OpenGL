@@ -54,12 +54,19 @@ void Log::log(const std::string &data, Channels c) {
 /*////////////
 //FILE CLASS//
 ////////////*/
-std::string File::readFile(std::string file_path) {
+std::string File::readFile(const std::string& file_path) {
+    std::ifstream in(file_path);
 
+    std::stringstream buffer;
+    buffer << in.rdbuf();
+
+    return buffer.str();
 }
 
-std::string File::writeFile(std::string file_path) {
-    
+void File::writeFile(const std::string& file_path, const std::string& contents) {
+    std::ofstream out(file_path);
+
+    out << contents;
 }
 
 /*/////////////////////

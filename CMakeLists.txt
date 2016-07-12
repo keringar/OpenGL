@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 find_package(glfw3 3.2 REQUIRED)
 find_package(OpenAL REQUIRED)
 
-set(SOURCE_FILES src/main.cpp src/glad.c src/Util.cpp src/Window.cpp src/Game.cpp src/Renderer/Renderer.cpp src/Input.cpp include/Renderer/Shader.cpp include/Renderer/Shader.h)
+set(SOURCE_FILES src/main.cpp src/glad.c src/Util.cpp src/Window.cpp src/Game.cpp src/Renderer/Renderer.cpp src/Input.cpp src/Renderer/Shader.cpp include/Renderer/Shader.h)
 add_executable(OpenGL ${SOURCE_FILES})
 
 target_include_directories(OpenGL PUBLIC include)
