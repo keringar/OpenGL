@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(const Window& window, Input& input) : m_window(window), m_input(input) {
+Game::Game(Window& window, Input& input) : m_window(window), m_input(input) {
     //Get input, renderer, audio, window
 }
 

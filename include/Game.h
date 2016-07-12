@@ -7,7 +7,7 @@
 
 class Game {
 public:
-    Game(const Window& window, Input& input);
+    Game(Window& window, Input& input);
 
     ~Game();
 
