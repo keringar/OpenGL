@@ -8,7 +8,7 @@ int main() {
     }
 
     //Initialize renderer
-    Renderer renderer;
+    Renderer renderer(window);
     if(!renderer.loadAll()){
         return -1;
     }

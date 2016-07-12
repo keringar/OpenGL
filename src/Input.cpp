@@ -5,10 +5,10 @@ std::map<int, bool> Input::held_keys;
 std::map<int, bool> Input::pressed_keys;
 std::map<int, bool> Input::released_keys;
 
-Input::Input(Window &window) {
+Input::Input(Window& window) : m_config{"keys"} {
     glfwSetKeyCallback(window, KeyboardCallback);
 
-    m_config = Configuration("keys");
+    //m_config = Configuration("keys");
 
     event_map.emplace(Event::QUIT, convertToKeyCode(m_config.get("quit")));
     event_map.emplace(Event::MOVE_UP, convertToKeyCode(m_config.get("move_up")));

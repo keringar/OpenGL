@@ -2,10 +2,11 @@
 #define RENDERER_H
 #include "Renderable.h"
 #include <vector>
+#include <Window.h>
 
 class Renderer{
     public:
-        Renderer();
+    Renderer(const Window& m_window);
         ~Renderer();
 
         //Copy constructor
@@ -17,7 +18,7 @@ class Renderer{
 
     private:
         std::vector<Renderable> m_render_queue;
-        
+    const Window& m_window;
 };
 
 #endif

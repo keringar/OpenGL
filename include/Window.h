@@ -26,7 +26,7 @@ public:
     void close();
 
 private:
-    GLFWwindow *m_window;
+    GLFWwindow* m_window;
     Configuration m_config;
 };
 

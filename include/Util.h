@@ -18,16 +18,20 @@ private:
 
 class Configuration {
 public:
-    Configuration() { };
-
     Configuration(std::string name);
-
     ~Configuration();
 
     //Copy constructor
     Configuration(const Configuration& config){
         this->m_name = config.m_name;
         this->options = config.options;
+    }
+
+    //Copy assignment operator
+    Configuration& operator=(const Configuration& config) {
+        this->m_name = config.m_name;
+        this->options = config.options;
+        return *this;
     }
 
     void add(std::string key, std::string value);

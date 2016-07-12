@@ -54,7 +54,7 @@ void Log::log(const std::string &data, Channels c) {
 /*/////////////////////
 //CONFIGURATION CLASS//
 /////////////////////*/
-Configuration::Configuration(std::string name) : m_name(name) {
+Configuration::Configuration(std::string name) : m_name{name} {
     readConfig(name);
 }
 

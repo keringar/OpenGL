@@ -4,8 +4,8 @@ void GLFWError(int error, const char *description) {
     Log::log(description, Log::Channels::Error);
 }
 
-Window::Window() {
-    m_config = Configuration("config");
+Window::Window() : m_config{"config"} {
+
 }
 
 Window::~Window() {
@@ -13,8 +13,7 @@ Window::~Window() {
 }
 
 //Copy constructor
-Window::Window(const Window& win) {
-    this->m_config = win.m_config;
+Window::Window(const Window& win) : m_config{"config"} {
     this->m_window = win.m_window;
 }
 
