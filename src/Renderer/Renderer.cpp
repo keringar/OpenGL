@@ -31,8 +31,7 @@ void Renderer::submit(std::vector<Renderable>& render_queue) {
 
 //Issue gpu commands
 void Renderer::issueRenderCommands() {
-    /*
-    GLfloat vertices[] = {
+/*    GLfloat vertices[] = {
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
             0.0f,  0.5f, 0.0f
@@ -42,7 +41,6 @@ void Renderer::issueRenderCommands() {
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-     */
-
+  */
 }
 

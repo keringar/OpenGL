@@ -4,6 +4,9 @@
 #include <string>
 #include <map>
 
+/*
+ * Logging class
+ */
 class Log {
 public:
     enum class Channels {
@@ -16,6 +19,19 @@ private:
     static bool firstRun;
 };
 
+/*
+ * File read/write class
+ */
+class File {
+public:
+    static std::string readFile(std::string file_path);
+
+    static std::string writeFile(std::string file_path);
+};
+
+/*
+ * Configuration class
+ */
 class Configuration {
 public:
     Configuration(std::string name);

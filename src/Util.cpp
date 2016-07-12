@@ -51,6 +51,17 @@ void Log::log(const std::string &data, Channels c) {
     }
 }
 
+/*////////////
+//FILE CLASS//
+////////////*/
+std::string File::readFile(std::string file_path) {
+
+}
+
+std::string File::writeFile(std::string file_path) {
+    
+}
+
 /*/////////////////////
 //CONFIGURATION CLASS//
 /////////////////////*/
