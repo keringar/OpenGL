@@ -60,7 +60,6 @@ void Input::KeyboardCallback(GLFWwindow *window, int key, int scancode, int acti
 }
 
 //Make better
-//DO I EVEN NEED THIS? CAN'T I JUST STORE AS INTS? AND DISPLAY AS STRINGS? WHATEV.
 int Input::convertToKeyCode(std::string key) {
     if (key == "SPACE") {
         return 32;
