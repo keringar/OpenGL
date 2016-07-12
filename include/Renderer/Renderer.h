@@ -1,5 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
+#include "Renderable.h"
+#include <vector>
 
 class Renderer{
     public:
@@ -15,6 +17,7 @@ class Renderer{
 
     private:
         std::vector<Renderable> m_render_queue;
+        
 };
 
 #endif

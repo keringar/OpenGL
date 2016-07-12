@@ -43,7 +43,8 @@ void Game::Update() {
 }
 
 void Game::Render() {
-    std::vector<Renderable> render_queue();
+    std::vector<Renderable> render_queue;
+
     m_renderer.submit(render_queue);
     m_renderer.issueRenderCommands();
 }
