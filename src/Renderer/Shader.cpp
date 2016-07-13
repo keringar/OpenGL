@@ -55,16 +55,18 @@ void Shader::checkForErrors(GLuint obj, Shader::ShaderType type) {
     if(type == Shader::ShaderType::SHADER){
         glGetShaderiv(obj, GL_COMPILE_STATUS, &success);
 
-        if(!success){
+        if(success == GL_FALSE){
             glGetShaderInfoLog(obj, 1024, nullptr, infoLog);
-            Log::log(infoLog);
+            Log::log("Shader Error: ");
+            Log::log(infoLog, Log::Channels::None);
         }
     } else {
-        glGetShaderiv(obj, GL_LINK_STATUS, &success);
+        glGetProgramiv(obj, GL_LINK_STATUS, &success);
 
-        if(!success){
+        if(success == GL_FALSE){
             glGetProgramInfoLog(obj, 1024, nullptr, infoLog);
-            Log::log(infoLog);
+            Log::log("Shader Program Error: ");
+            Log::log(infoLog, Log::Channels::None);
         }
     }
 }

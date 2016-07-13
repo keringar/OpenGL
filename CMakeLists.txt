@@ -12,4 +12,5 @@ add_executable(OpenGL ${SOURCE_FILES})
 target_include_directories(OpenGL PUBLIC include)
 target_link_libraries(OpenGL glfw openal)
 
-file(COPY shaders DESTINATION ./)
+add_custom_command(TARGET OpenGL POST_BUILD COMMAND rm -rf $(CMAKE_BINARY_DIR)/shaders)
+add_custom_command(TARGET OpenGL POST_BUILD COMMAND cp -rf $(CMAKE_SOURCE_DIR)/shaders $(CMAKE_BINARY_DIR)/)

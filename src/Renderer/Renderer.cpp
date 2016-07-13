@@ -4,24 +4,23 @@
 
 //Constructor
 Renderer::Renderer(const Window& window) : m_window{window} {
-    Log::log("Constructing Renderer", Log::Channels::None);
+    glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
     //Create texture manager, shader manager and model manager
 }
 
 //Deconstructor
 Renderer::~Renderer() {
-    Log::log("Deconstructing Renderer", Log::Channels::None);
+
     //Destroy texture, shader and model managers
 }
 
 //Copy constructor
 Renderer::Renderer(const Renderer& render) : m_window{render.m_window} {
-    Log::log("Copying Renderer", Log::Channels::None);
+
 }
 
 //Load all textures, models
 bool Renderer::loadAll() {
-    Log::log("Loading textures and models", Log::Channels::None);
     return true;
 }
 
@@ -32,6 +31,8 @@ void Renderer::submit(std::vector<Renderable>& render_queue) {
 
 //Issue gpu commands
 void Renderer::issueRenderCommands() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     GLfloat vertices[] = {
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
@@ -55,13 +56,12 @@ void Renderer::issueRenderCommands() {
     std::string vertexShader = File::readFile("shaders/basic.vert");
     std::string fragmentShader = File::readFile("shaders/basic.frag");
 
-    Log::log(vertexShader);
-    Log::log(fragmentShader);
-
     Shader program;
 
     program.compile(vertexShader, fragmentShader);
     program.use();
+
+    program.SetFloat("time", sin(glfwGetTime() * 4) + 0.2);
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);

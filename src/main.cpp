@@ -4,12 +4,14 @@ int main() {
     //Initialize Window
     Window window;
     if (!window.init()) {
+        Log::log("Window failure, quitting");
         return -1;
     }
 
     //Initialize renderer
     Renderer renderer(window);
     if(!renderer.loadAll()){
+        Log::log("Could not load resources");
         return -1;
     }
 

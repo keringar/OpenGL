@@ -5,7 +5,7 @@ void GLFWError(int error, const char *description) {
 }
 
 Window::Window() : m_config{"config"} {
-
+    glfwSetErrorCallback(GLFWError);
 }
 
 Window::~Window() {
@@ -43,9 +43,9 @@ bool Window::init() {
         return false;
     }
 
-    glfwWindowHint(GLFW_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_window = glfwCreateWindow(windowX, windowY, "OpenGL", nullptr, nullptr);
 
@@ -59,17 +59,14 @@ bool Window::init() {
         glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
     }
 
+    glfwMakeContextCurrent(m_window);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
     if (vsync) {
         glfwSwapInterval(1);
     }
 
-    //glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
-    glfwSetWindowSizeLimits(m_window, GLFW_DONT_CARE, GLFW_DONT_CARE, 800, 600);
-
-    glfwMakeContextCurrent(m_window);
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-
-    glfwSetErrorCallback(GLFWError);
+    glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
     return true;
 }
