@@ -11,3 +11,5 @@ add_executable(OpenGL ${SOURCE_FILES})
 
 target_include_directories(OpenGL PUBLIC include)
 target_link_libraries(OpenGL glfw openal)
+
+file(COPY shaders DESTINATION ./)

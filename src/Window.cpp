@@ -25,10 +25,6 @@ Window& Window::operator=(const Window& win) {
 }
 
 bool Window::init() {
-    glfwWindowHint(GLFW_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
     int windowX = m_config.getAsInt("WindowSizeX");
     int windowY = m_config.getAsInt("WindowSizeY");
     bool vsync = m_config.getAsBool("V-Sync");
@@ -47,6 +43,10 @@ bool Window::init() {
         return false;
     }
 
+    glfwWindowHint(GLFW_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_VERSION_MINOR, 0);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     m_window = glfwCreateWindow(windowX, windowY, "OpenGL", nullptr, nullptr);
 
     if (m_window == nullptr) {
@@ -63,19 +63,25 @@ bool Window::init() {
         glfwSwapInterval(1);
     }
 
-    glfwSetWindowSizeLimits(m_window, 800, 600, 100000, 100000);
+    //glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
+    glfwSetWindowSizeLimits(m_window, GLFW_DONT_CARE, GLFW_DONT_CARE, 800, 600);
 
-    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
     glfwMakeContextCurrent(m_window);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
     glfwSetErrorCallback(GLFWError);
 
     return true;
 }
 
-bool Window::isOpen() {
+bool Window::isOpen() const {
     return glfwWindowShouldClose(m_window) == GLFW_FALSE;
 }
 
 void Window::close() {
     glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+}
+
+void Window::swap() const {
+    glfwSwapBuffers(m_window);
 }

@@ -22,8 +22,9 @@ public:
         return m_window;
     }
 
-    bool isOpen();
+    bool isOpen() const;
     void close();
+    void swap() const;
 
 private:
     GLFWwindow* m_window;
