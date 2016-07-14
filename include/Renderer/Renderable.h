@@ -3,7 +3,7 @@
 
 class Renderable{
     public:
-        virtual int getID() = 0;
+        virtual int getID() const = 0;
 };
 
 #endif

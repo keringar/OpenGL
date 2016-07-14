@@ -5,6 +5,12 @@
 //Constructor
 Renderer::Renderer(const Window& window) : m_window{window} {
     glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     //Create texture manager, shader manager and model manager
 }
 
@@ -26,7 +32,9 @@ bool Renderer::loadAll() {
 
 //Get render queue
 void Renderer::submit(std::vector<Renderable>& render_queue) {
-
+    for(const auto& item : render_queue){
+        GLuint VAO, VBO;
+    }
 }
 
 //Issue gpu commands
