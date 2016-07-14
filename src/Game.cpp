@@ -1,7 +1,7 @@
 #include "Game.h"
 
-Game::Game(Window& window, Input& input, Renderer& renderer) : m_window{window}, m_input{input}, m_renderer{renderer} {
-    //Get input, renderer, audio, window
+Game::Game(Window& window, Input& input, Renderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
+
 }
 
 Game::~Game() {
@@ -43,8 +43,6 @@ void Game::Update() {
 }
 
 void Game::Render() {
-    std::vector<Renderable> render_queue;
-
-    m_renderer.submit(render_queue);
-    m_renderer.issueRenderCommands();
+    m_renderer.submit();
+    m_renderer.issueRenderCommands(m_camera.getViewMatrix());
 }

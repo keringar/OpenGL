@@ -1,7 +1,7 @@
 #include <Game.h>
 
 int main() {
-    //Initialize Window
+    //Initialize window
     Window window;
     if (!window.init()) {
         Log::log("Window failure, quitting");
@@ -15,6 +15,9 @@ int main() {
         return -1;
     }
 
+    //Initalize camera
+    Camera camera;
+
     //Initialize audio
 
 
@@ -22,7 +25,7 @@ int main() {
     Input input(window);
 
     //Pass window, renderer, audio and input to game
-    Game game(window, input, renderer);
+    Game game(window, input, renderer, camera);
 
     //Game Loop
     while (game.isRunning()) {

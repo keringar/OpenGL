@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-#include "Renderable.h"
 #include <vector>
 #include <Window.h>
+#include <glm/detail/type_mat4x4.hpp>
 
 class Renderer{
     public:
@@ -13,12 +13,12 @@ class Renderer{
         Renderer(const Renderer& render);
 
         bool loadAll();
-        void submit(std::vector<Renderable>& render_queue);
-        void issueRenderCommands();
+        void submit();
+        void issueRenderCommands(glm::mat4 view);
 
     private:
-        std::vector<Renderable> m_render_queue;
-    const Window& m_window;
+
+        const Window& m_window;
 };
 
 #endif

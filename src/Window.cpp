@@ -1,7 +1,16 @@
 #include "Window.h"
+#include <glm/gtc/matrix_transform.hpp>
+
+//Initialize static variables
+int Window::width = 0;
+int Window::height = 0;
 
 void GLFWError(int error, const char *description) {
     Log::log(description, Log::Channels::Error);
+}
+
+void framebufferResize(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
 }
 
 Window::Window() : m_config{"config"} {
@@ -68,6 +77,9 @@ bool Window::init() {
 
     glfwSetWindowSizeLimits(m_window, 800, 600, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
+    glfwSetFramebufferSizeCallback(m_window, framebufferResize);
+    glfwGetFramebufferSize(m_window, &Window::width, &Window::height);
+
     return true;
 }
 
@@ -81,4 +93,8 @@ void Window::close() {
 
 void Window::swap() const {
     glfwSwapBuffers(m_window);
+}
+
+glm::mat4 Window::getProjectionMatrix(GLfloat fov) const {
+    return glm::perspective(glm::radians(fov), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }

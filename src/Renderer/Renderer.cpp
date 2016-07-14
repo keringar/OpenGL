@@ -1,16 +1,19 @@
 #include <Util.h>
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 //Constructor
 Renderer::Renderer(const Window& window) : m_window{window} {
-    glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
+    glClearColor(0.529f, 0.808f, 0.922f, 1.0f); //Sky-Blue
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //Create texture manager, shader manager and model manager
 }
 
@@ -31,32 +34,52 @@ bool Renderer::loadAll() {
 }
 
 //Get render queue
-void Renderer::submit(std::vector<Renderable>& render_queue) {
-    for(const auto& item : render_queue){
-        GLuint VAO, VBO;
-    }
+void Renderer::submit() {
+
 }
 
 //Issue gpu commands
-void Renderer::issueRenderCommands() {
+void Renderer::issueRenderCommands(glm::mat4 view) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    GLfloat vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
-    };
+    const int rows = 16;
+    const int cols = 16;
 
-    GLuint VAO, VBO;
+    //Vertices
+    std::vector<GLfloat> vertices;
+    for(int r = 0; r < rows; ++r){
+        for(int c = 0; c < cols; ++c){
+            vertices.push_back((c - 8) / (GLfloat)(rows));
+            vertices.push_back((r - 8) / (GLfloat)(cols));
+            vertices.push_back((GLfloat) 0);
+        }
+    }
+
+    //Indices
+    std::vector<GLuint> indices;
+    for(GLuint r = 0; r < rows - 1; ++r){
+        indices.push_back(r * cols);
+        for(int c = 0; c < cols; ++c){
+            indices.push_back(r * cols + c);
+            indices.push_back((r + 1) * cols + c);
+        }
+        indices.push_back((r + 1) * cols + (cols - 1));
+    }
+
+    GLuint VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices.front(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices.front(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*) 0);
     glEnableVertexAttribArray(0);
 
     glBindVertexArray(0);
@@ -69,10 +92,13 @@ void Renderer::issueRenderCommands() {
     program.compile(vertexShader, fragmentShader);
     program.use();
 
-    program.SetFloat("time", sin(glfwGetTime() * 4) + 0.2);
+    glm::mat4 model;
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    program.SetMatrix4("mvp", m_window.getProjectionMatrix(90.0f) * view * model);
 
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     m_window.swap();
