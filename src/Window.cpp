@@ -38,6 +38,7 @@ bool Window::init() {
     int windowY = m_config.getAsInt("WindowSizeY");
     bool vsync = m_config.getAsBool("V-Sync");
     bool fullscreen = m_config.getAsBool("Fullscreen");
+    int MSAA_sample = m_config.getAsInt("MSAA");
 
     if (windowX < 800 || windowX > 10000) {
         windowX = std::stoi(m_config.setValue("WindowSizeX", "800"));
@@ -45,6 +46,10 @@ bool Window::init() {
 
     if (windowY < 600 || windowY > 10000) {
         windowY = std::stoi(m_config.setValue("WindowSizeY", "600"));
+    }
+
+    if (MSAA_sample < 0 || MSAA_sample > 16) {
+        MSAA_sample = std::stoi(m_config.setValue("MSAA", "0"));
     }
 
     if (glfwInit() == GLFW_FALSE) {
@@ -55,6 +60,7 @@ bool Window::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, MSAA_sample);
 
     m_window = glfwCreateWindow(windowX, windowY, "OpenGL", nullptr, nullptr);
 

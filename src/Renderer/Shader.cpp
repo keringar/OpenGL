@@ -20,7 +20,7 @@ void Shader::compile(const std::string& vertexSource, const std::string& fragmen
     sourceString = fragmentSource.c_str();
     glShaderSource(fragment, 1, &sourceString, nullptr);
     glCompileShader(fragment);
-    checkForErrors(vertex, ShaderType::SHADER);
+    checkForErrors(fragment, ShaderType::SHADER);
 
     if(geometrySource != "") {
         geometry = glCreateShader(GL_GEOMETRY_SHADER);

@@ -2,6 +2,9 @@
 #include "Renderer/Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <Renderer/stb_image.h>
+
 //Constructor
 Renderer::Renderer(const Window& window) : m_window{window} {
     glClearColor(0.529f, 0.808f, 0.922f, 1.0f); //Sky-Blue
@@ -9,10 +12,12 @@ Renderer::Renderer(const Window& window) : m_window{window} {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    glEnable(GL_MULTISAMPLE);
     //Create texture manager, shader manager and model manager
 }
 
@@ -41,9 +46,14 @@ bool Renderer::loadAll() {
     std::vector<GLfloat> vertices;
     for(int r = 0; r < rows; ++r){
         for(int c = 0; c < cols; ++c){
-            vertices.push_back((c - (cols/2) )/ 2);
-            vertices.push_back((r - (rows/2) )/ 2);
+            //Vertices
+            vertices.push_back((c - (cols/2)) / 5);
+            vertices.push_back((r - (rows/2)) / 5);
             vertices.push_back(0.0);
+
+            //Texture2D coords
+            vertices.push_back((GLfloat)c / cols);
+            vertices.push_back((GLfloat)c / cols);
         }
     }
 
@@ -71,12 +81,26 @@ bool Renderer::loadAll() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices.front(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*) 0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*) (3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
     size = indices.size();
+
+    int x;
+    int y;
+    int comp;
+
+    unsigned char* data = stbi_load("texture.jpg", &x, &y, &comp, STBI_rgb);
+
+    m_texture = Texture2D();
+    m_texture.upload(x, y, data);
+
+    stbi_image_free(data);
 
     return true;
 }
@@ -93,9 +117,9 @@ void Renderer::issueRenderCommands(glm::mat4 view) {
     m_shader.use();
 
     glm::mat4 model;
+    m_shader.SetMatrix4("mvp", m_window.getProjectionMatrix((sin(glfwGetTime()) + 1) * 85.0f) * view * model);
 
-    m_shader.SetMatrix4("mvp", m_window.getProjectionMatrix(90.0f) * view * model);
-    m_shader.SetFloat("time", glfwGetTime());
+    m_texture.bind();
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLE_STRIP, size, GL_UNSIGNED_INT, 0);

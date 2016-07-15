@@ -1,8 +1,10 @@
 #ifndef RENDERER_H
 #define RENDERER_H
+
 #include <vector>
 #include <Window.h>
 #include <Renderer/Shader.h>
+#include <Renderer/Texture2D.h>
 #include <glm/detail/type_mat4x4.hpp>
 
 class Renderer{
@@ -20,6 +22,7 @@ class Renderer{
     private:
         Shader m_shader;
         const Window& m_window;
+        Texture2D m_texture;
 
         GLuint VAO;
         int size;

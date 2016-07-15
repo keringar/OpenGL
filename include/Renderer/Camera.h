@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <glm/detail/type_mat.hpp>
 
 class Camera {
@@ -13,7 +15,8 @@ class Camera {
         glm::mat4 getViewMatrix();
 
     private:
-
+        GLfloat xPosition = 0;
+        GLfloat yPosition = 0;
 };
 
 #endif

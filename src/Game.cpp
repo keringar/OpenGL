@@ -23,16 +23,16 @@ void Game::HandleInput() {
                 m_window.close();
                 break;
             case Event::MOVE_UP:
-
+                m_camera.moveForward();
                 break;
             case Event::MOVE_RIGHT:
-
+                m_camera.moveRight();
                 break;
-            case Event::MOVE_DOWN:
-
+            case Event::MOVE_BACK:
+                m_camera.moveBack();
                 break;
             case Event::MOVE_LEFT:
-
+                m_camera.moveLeft();
                 break;
             case Event::TOGGLE_FULLSCREEN:
                 m_window.toggleFullscreen();
