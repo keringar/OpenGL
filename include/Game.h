@@ -21,10 +21,10 @@ public:
     void Render();
 
 private:
-    Window m_window;
-    Input m_input;
-    Renderer m_renderer;
-    Camera m_camera;
+    Window& m_window;
+    Input& m_input;
+    Renderer& m_renderer;
+    Camera& m_camera;
 };
 
 #endif //GAME_H

@@ -66,6 +66,7 @@ bool Window::init() {
     if (fullscreen) {
         const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+        glfwSetWindowSize(m_window, mode->width, mode->height);
     }
 
     glfwMakeContextCurrent(m_window);
@@ -93,6 +94,21 @@ void Window::close() {
 
 void Window::swap() const {
     glfwSwapBuffers(m_window);
+}
+
+void Window::toggleFullscreen() {
+    if(m_config.getAsBool("Fullscreen")){
+        m_config.setValue("Fullscreen", "false");
+
+        glfwSetWindowMonitor(m_window, nullptr, 100, 100, m_config.getAsInt("WindowSizeX"), m_config.getAsInt("WindowSizeY"), 0);
+        glfwSetWindowSize(m_window, 100, 100);
+    } else {
+        m_config.setValue("Fullscreen", "true");
+
+        const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+        glfwSetWindowSize(m_window, mode->width, mode->height);
+    }
 }
 
 glm::mat4 Window::getProjectionMatrix(GLfloat fov) const {

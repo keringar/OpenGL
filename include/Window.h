@@ -28,8 +28,10 @@ public:
     bool isOpen() const;
     void close();
     void swap() const;
+    void toggleFullscreen();
 
     glm::mat4 getProjectionMatrix(GLfloat fov) const;
+
 private:
     GLFWwindow* m_window;
     Configuration m_config;

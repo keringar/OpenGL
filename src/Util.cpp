@@ -122,6 +122,7 @@ std::string Configuration::get(std::string key) {
 //Returns value
 std::string Configuration::setValue(std::string key, std::string value) {
     options[key] = value;
+    writeConfig();
     return value;
 }
 
@@ -152,7 +153,8 @@ bool Configuration::getAsBool(std::string key) {
 //Opens file and flushes map
 void Configuration::writeConfig() {
     std::filebuf file;
-    file.open(m_name.append(".cfg"), std::ios::out);
+    std::string tmp = m_name;
+    file.open(tmp.append(".cfg"), std::ios::out);
     std::ostream os(&file);
 
     for (auto iter = options.begin(); iter != options.end(); ++iter) {

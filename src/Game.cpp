@@ -34,6 +34,9 @@ void Game::HandleInput() {
             case Event::MOVE_LEFT:
 
                 break;
+            case Event::TOGGLE_FULLSCREEN:
+                m_window.toggleFullscreen();
+                break;
         }
     }
 }

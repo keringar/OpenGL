@@ -69,6 +69,10 @@ public:
         return m_name;
     }
 
+    void flush() {
+        writeConfig();
+    }
+
 private:
     std::map<std::string, std::string> options;
     std::string m_name;

@@ -5,6 +5,11 @@
 
 class Camera {
     public:
+        void moveForward();
+        void moveLeft();
+        void moveRight();
+        void moveBack();
+
         glm::mat4 getViewMatrix();
 
     private:

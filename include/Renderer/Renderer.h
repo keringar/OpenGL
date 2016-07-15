@@ -2,6 +2,7 @@
 #define RENDERER_H
 #include <vector>
 #include <Window.h>
+#include <Renderer/Shader.h>
 #include <glm/detail/type_mat4x4.hpp>
 
 class Renderer{
@@ -17,8 +18,11 @@ class Renderer{
         void issueRenderCommands(glm::mat4 view);
 
     private:
-
+        Shader m_shader;
         const Window& m_window;
+
+        GLuint VAO;
+        int size;
 };
 
 #endif

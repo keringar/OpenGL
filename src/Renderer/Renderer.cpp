@@ -1,6 +1,5 @@
 #include <Util.h>
 #include "Renderer/Renderer.h"
-#include "Renderer/Shader.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 //Constructor
@@ -10,7 +9,7 @@ Renderer::Renderer(const Window& window) : m_window{window} {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -30,28 +29,21 @@ Renderer::Renderer(const Renderer& render) : m_window{render.m_window} {
 
 //Load all textures, models
 bool Renderer::loadAll() {
-    return true;
-}
+    std::string vertexShader = File::readFile("shaders/basic.vert");
+    std::string fragmentShader = File::readFile("shaders/basic.frag");
 
-//Get render queue
-void Renderer::submit() {
+    m_shader.compile(vertexShader, fragmentShader);
 
-}
-
-//Issue gpu commands
-void Renderer::issueRenderCommands(glm::mat4 view) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    const int rows = 16;
-    const int cols = 16;
+    const int rows = 512;
+    const int cols = 512;
 
     //Vertices
     std::vector<GLfloat> vertices;
     for(int r = 0; r < rows; ++r){
         for(int c = 0; c < cols; ++c){
-            vertices.push_back((c - 8) / (GLfloat)(rows));
-            vertices.push_back((r - 8) / (GLfloat)(cols));
-            vertices.push_back((GLfloat) 0);
+            vertices.push_back((c - (cols/2) )/ 2);
+            vertices.push_back((r - (rows/2) )/ 2);
+            vertices.push_back(0.0);
         }
     }
 
@@ -66,7 +58,7 @@ void Renderer::issueRenderCommands(glm::mat4 view) {
         indices.push_back((r + 1) * cols + (cols - 1));
     }
 
-    GLuint VAO, VBO, EBO;
+    GLuint VBO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -84,21 +76,29 @@ void Renderer::issueRenderCommands(glm::mat4 view) {
 
     glBindVertexArray(0);
 
-    std::string vertexShader = File::readFile("shaders/basic.vert");
-    std::string fragmentShader = File::readFile("shaders/basic.frag");
+    size = indices.size();
 
-    Shader program;
+    return true;
+}
 
-    program.compile(vertexShader, fragmentShader);
-    program.use();
+//Get render queue
+void Renderer::submit() {
+
+}
+
+//Issue gpu commands
+void Renderer::issueRenderCommands(glm::mat4 view) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_shader.use();
 
     glm::mat4 model;
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-    program.SetMatrix4("mvp", m_window.getProjectionMatrix(90.0f) * view * model);
+    m_shader.SetMatrix4("mvp", m_window.getProjectionMatrix(90.0f) * view * model);
+    m_shader.SetFloat("time", glfwGetTime());
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLE_STRIP, size, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     m_window.swap();

@@ -10,12 +10,13 @@ enum class Event {
     MOVE_UP,
     MOVE_RIGHT,
     MOVE_DOWN,
-    MOVE_LEFT
+    MOVE_LEFT,
+    TOGGLE_FULLSCREEN
 };
 
 class Input {
 public:
-    Input(Window &window);
+    Input(GLFWwindow* window);
 
     ~Input();
 
