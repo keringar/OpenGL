@@ -119,6 +119,14 @@ std::string Configuration::get(std::string key) {
     return options[key];
 }
 
+std::string Configuration::getWithDefault(std::string key, std::string defaultValue) {
+    if(get(key) == "") {
+        return setValue(key, defaultValue);
+    }
+
+    return get(key);
+}
+
 //Returns value
 std::string Configuration::setValue(std::string key, std::string value) {
     options[key] = value;

@@ -11,6 +11,8 @@ void GLFWError(int error, const char *description) {
 
 void framebufferResize(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    Window::width = width;
+    Window::height = height;
 }
 
 Window::Window() : m_config{"config"} {
@@ -117,6 +119,6 @@ void Window::toggleFullscreen() {
     }
 }
 
-glm::mat4 Window::getProjectionMatrix(GLfloat fov) const {
-    return glm::perspective(glm::radians(fov), (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+glm::mat4 Window::getProjectionMatrix() const {
+    return glm::perspective(90.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }

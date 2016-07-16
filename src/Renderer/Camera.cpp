@@ -1,23 +1,49 @@
 #include "Renderer/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-void Camera::moveForward() {
-    yPosition += 0.5f;
+void Camera::moveForward(){
+    heldY = true;
+    acceleration.y += 1.0f;
 }
 
-void Camera::moveLeft() {
-    xPosition += 0.5f;
+void Camera::moveBack(){
+    heldY = true;
+    acceleration.y -= 1.0f;
 }
 
-void Camera::moveRight() {
-    xPosition -= 0.5f;
+void Camera::moveRight(){
+    heldX = true;
+    acceleration.x += 1.0f;
 }
 
-void Camera::moveBack() {
-    yPosition -= 0.5f;
+void Camera::moveLeft(){
+    heldX = true;
+    acceleration.x -= 1.0f;
+}
+
+void Camera::update(double deltaTime) {
+    glm::normalize(acceleration);
+    acceleration *= ACCEL_RATE * deltaTime;
+
+    velocity += acceleration;
+    glm::clamp(velocity, 0.0f, 0.1f);
+
+    position += velocity;
+
+    if(!heldX){
+        velocity.x += -velocity.x * DECCEL_RATE * deltaTime;
+    }
+
+    if(!heldY){
+        velocity.y += -velocity.y * DECCEL_RATE * deltaTime;
+    }
+
+    heldX = false;
+    heldY = false;
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    glm::vec3 worldLocation = glm::vec3(xPosition, yPosition, -5.0f);
-    return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::vec3 worldLocation = glm::vec3(position, 5.0f);
+    //return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Tilted
 }

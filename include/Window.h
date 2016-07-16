@@ -30,13 +30,13 @@ public:
     void swap() const;
     void toggleFullscreen();
 
-    glm::mat4 getProjectionMatrix(GLfloat fov) const;
+    glm::mat4 getProjectionMatrix() const;
+
+    static int width, height;
 
 private:
     GLFWwindow* m_window;
     Configuration m_config;
-
-    static int width, height;
 };
 
 #endif

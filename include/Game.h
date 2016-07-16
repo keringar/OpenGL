@@ -16,7 +16,7 @@ public:
 
     void HandleInput();
 
-    void Update();
+    void Update(double deltaTime);
 
     void Render();
 

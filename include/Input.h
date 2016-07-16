@@ -20,7 +20,7 @@ public:
 
     ~Input();
 
-    std::vector<Event> handle_input();
+    void handle_input(std::vector<Event>& heldKeys, std::vector<Event>& pressedKeys);
 
     static void KeyboardCallback(GLFWwindow *window, int key, int scancode, int actions, int mods);
 

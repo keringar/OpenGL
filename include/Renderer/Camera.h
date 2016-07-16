@@ -11,12 +11,16 @@ class Camera {
         void moveLeft();
         void moveRight();
         void moveBack();
+        void update(double deltaTime);
 
         glm::mat4 getViewMatrix();
 
     private:
-        GLfloat xPosition = 0;
-        GLfloat yPosition = 0;
+        glm::vec2 acceleration, velocity, position;
+        bool heldX, heldY;
+
+        const GLfloat ACCEL_RATE = 1.5f;  //Default:  0.8f
+        const GLfloat DECCEL_RATE = 10.0f;//Default: 10.0f
 };
 
 #endif

@@ -7,18 +7,15 @@
 
 //Constructor
 Renderer::Renderer(const Window& window) : m_window{window} {
-    glClearColor(0.529f, 0.808f, 0.922f, 1.0f); //Sky-Blue
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     glEnable(GL_MULTISAMPLE);
-    //Create texture manager, shader manager and model manager
 }
 
 //Deconstructor
@@ -39,21 +36,22 @@ bool Renderer::loadAll() {
 
     m_shader.compile(vertexShader, fragmentShader);
 
-    const int rows = 512;
-    const int cols = 512;
+    const int rows = 1024;
+    const int cols = 1024;
+    const int SCALE_FACTOR = rows * 2;
 
     //Vertices
     std::vector<GLfloat> vertices;
     for(int r = 0; r < rows; ++r){
         for(int c = 0; c < cols; ++c){
             //Vertices
-            vertices.push_back((c - (cols/2)) / 5);
-            vertices.push_back((r - (rows/2)) / 5);
+            vertices.push_back((c - (cols / 2)) / (GLfloat)rows * SCALE_FACTOR);
+            vertices.push_back((r - (rows / 2)) / (GLfloat)cols * SCALE_FACTOR);
             vertices.push_back(0.0);
 
             //Texture2D coords
-            vertices.push_back((GLfloat)c / cols);
-            vertices.push_back((GLfloat)c / cols);
+            vertices.push_back((GLfloat)(c % 2));
+            vertices.push_back((GLfloat)(r % 2));
         }
     }
 
@@ -117,7 +115,7 @@ void Renderer::issueRenderCommands(glm::mat4 view) {
     m_shader.use();
 
     glm::mat4 model;
-    m_shader.SetMatrix4("mvp", m_window.getProjectionMatrix((sin(glfwGetTime()) + 1) * 85.0f) * view * model);
+    m_shader.SetMatrix4("mvp", m_window.getProjectionMatrix() * view * model);
 
     m_texture.bind();
 

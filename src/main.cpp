@@ -27,11 +27,26 @@ int main() {
     //Pass window, renderer, audio and input to game
     Game game(window, input, renderer, camera);
 
+    //Delta time
+    const double timeDelta = 20.0 / 1000.0; //20 update ticks per second
+    double timeAccumulator = 0;
+    double startTime = 0;
+
     //Game Loop
     while (game.isRunning()) {
-        game.HandleInput();
-        game.Update();
+        double currentTimeSimulated = 0;
+        startTime = glfwGetTime();
+
+        while(timeAccumulator >= timeDelta){
+            game.Update(timeDelta);
+            timeAccumulator -= timeDelta;
+            currentTimeSimulated += timeDelta;
+        }
+
         game.Render();
+        game.HandleInput();
+
+        timeAccumulator += glfwGetTime() - startTime;
     }
 
     return 0;

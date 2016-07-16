@@ -14,14 +14,12 @@ bool Game::isRunning() {
 
 void Game::HandleInput() {
     //Input queue - filled with events
-    std::vector<Event> input_queue = m_input.handle_input();
+    std::vector<Event> pressed_keys, held_keys;
+    m_input.handle_input(held_keys, pressed_keys);
 
     //Send events to registered listeners
-    for (const auto& event : input_queue) {
+    for (const auto& event : held_keys) {
         switch(event) {
-            case Event::QUIT:
-                m_window.close();
-                break;
             case Event::MOVE_UP:
                 m_camera.moveForward();
                 break;
@@ -34,6 +32,14 @@ void Game::HandleInput() {
             case Event::MOVE_LEFT:
                 m_camera.moveLeft();
                 break;
+        }
+    }
+
+    for (const auto& event : pressed_keys) {
+        switch(event) {
+            case Event::QUIT:
+                m_window.close();
+                break;
             case Event::TOGGLE_FULLSCREEN:
                 m_window.toggleFullscreen();
                 break;
@@ -41,8 +47,9 @@ void Game::HandleInput() {
     }
 }
 
-void Game::Update() {
+void Game::Update(double deltaTime) {
     //Call update on all game objects
+    m_camera.update(deltaTime);
 }
 
 void Game::Render() {

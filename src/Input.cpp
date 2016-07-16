@@ -8,31 +8,31 @@ std::map<int, bool> Input::released_keys;
 Input::Input(GLFWwindow* window) : m_config{"keys"} {
     glfwSetKeyCallback(window, KeyboardCallback);
 
-    event_map.emplace(Event::QUIT, convertToKeyCode(m_config.get("quit")));
-    event_map.emplace(Event::MOVE_UP, convertToKeyCode(m_config.get("move_up")));
-    event_map.emplace(Event::MOVE_RIGHT, convertToKeyCode(m_config.get("move_right")));
-    event_map.emplace(Event::MOVE_BACK, convertToKeyCode(m_config.get("move_down")));
-    event_map.emplace(Event::MOVE_LEFT, convertToKeyCode(m_config.get("move_left")));
-    event_map.emplace(Event::TOGGLE_FULLSCREEN, convertToKeyCode(m_config.get("fullscreen")));
+    event_map.emplace(Event::QUIT, convertToKeyCode(m_config.getWithDefault("quit", "ESCAPE")));
+    event_map.emplace(Event::MOVE_UP, convertToKeyCode(m_config.getWithDefault("move_up", "W")));
+    event_map.emplace(Event::MOVE_RIGHT, convertToKeyCode(m_config.getWithDefault("move_right", "D")));
+    event_map.emplace(Event::MOVE_BACK, convertToKeyCode(m_config.getWithDefault("move_down", "S")));
+    event_map.emplace(Event::MOVE_LEFT, convertToKeyCode(m_config.getWithDefault("move_left", "A")));
+    event_map.emplace(Event::TOGGLE_FULLSCREEN, convertToKeyCode(m_config.getWithDefault("fullscreen", "F11")));
 }
 
 Input::~Input() {
 
 }
 
-std::vector<Event> Input::handle_input() {
+void Input::handle_input(std::vector<Event>& heldKeys, std::vector<Event>& pressedKeys) {
     glfwPollEvents();
-    std::vector<Event> input_queue;
 
     for (const auto &pair : event_map) {
         if (was_pressed(pair.second)) {
-            input_queue.push_back(pair.first);
+            pressedKeys.push_back(pair.first);
+        }
+        if (is_held(pair.second)) {
+            heldKeys.push_back(pair.first);
         }
     }
 
     clear_keys();
-
-    return input_queue;
 }
 
 bool Input::is_held(int key) {
