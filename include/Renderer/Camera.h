@@ -11,6 +11,7 @@ class Camera {
         void moveLeft();
         void moveRight();
         void moveBack();
+        void zoom(double zoomOffset);
         void update(double deltaTime);
 
         glm::mat4 getViewMatrix();

@@ -31,8 +31,8 @@ Renderer::Renderer(const Renderer& render) : m_window{render.m_window} {
 
 //Load all textures, models
 bool Renderer::loadAll() {
-    std::string vertexShader = File::readFile("shaders/basic.vert");
-    std::string fragmentShader = File::readFile("shaders/basic.frag");
+    std::string vertexShader = File::readFile("data/shaders/basic.vert");
+    std::string fragmentShader = File::readFile("data/shaders/basic.frag");
 
     m_shader.compile(vertexShader, fragmentShader);
 
@@ -93,7 +93,7 @@ bool Renderer::loadAll() {
     int y;
     int comp;
 
-    unsigned char* data = stbi_load("texture.jpg", &x, &y, &comp, STBI_rgb);
+    unsigned char* data = stbi_load("data/texture.jpg", &x, &y, &comp, STBI_rgb);
 
     m_texture = Texture2D();
     m_texture.upload(x, y, data);

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(OpenGL)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 find_package(glfw3 3.2 REQUIRED)
@@ -10,6 +11,3 @@ add_executable(OpenGL ${SOURCE_FILES})
 
 target_include_directories(OpenGL PUBLIC include)
 target_link_libraries(OpenGL glfw)
-
-add_custom_command(TARGET OpenGL POST_BUILD COMMAND cp $(CMAKE_SOURCE_DIR)/data $(CMAKE_BINARY_DIR)/)
-add_custom_command(TARGET OpenGL POST_BUILD COMMAND cp --remove-destination $(CMAKE_SOURCE_DIR)/data/shaders $(CMAKE_BINARY_DIR)/data)

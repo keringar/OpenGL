@@ -21,6 +21,11 @@ void Camera::moveLeft(){
     acceleration.x -= 1.0f;
 }
 
+#include "Util.h"
+void Camera::zoom(double zoomOffset){
+    Log::log(std::to_string(zoomOffset));
+}
+
 void Camera::update(double deltaTime) {
     glm::normalize(acceleration);
     acceleration *= ACCEL_RATE * deltaTime;
@@ -44,6 +49,5 @@ void Camera::update(double deltaTime) {
 
 glm::mat4 Camera::getViewMatrix() {
     glm::vec3 worldLocation = glm::vec3(position, 5.0f);
-    //return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Tilted
+    return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Top down
 }

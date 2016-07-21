@@ -26,13 +26,10 @@ public:
 
 private:
     bool is_held(int key);
-
     bool was_released(int key);
-
     bool was_pressed(int key);
 
     void clear_keys();
-
     int convertToKeyCode(std::string key);
 
     Configuration m_config;
