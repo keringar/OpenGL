@@ -3,15 +3,12 @@
 Requires CMake, GLFW >= 3.2, OpenGL >= 3.3, A C++11 compiler
 
 #Linux
-'''
+'''bash
 $ git clone https://github.com/keringar/opengl
-
 $ cd opengl/bin
-
 $ cmake ..
-'''c++
 $ ./OpenGL
-
+'''
 
 #OSX
 
