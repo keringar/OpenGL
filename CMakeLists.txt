@@ -11,3 +11,8 @@ add_executable(OpenGL ${SOURCE_FILES})
 
 target_include_directories(OpenGL PUBLIC include)
 target_link_libraries(OpenGL glfw)
+
+add_custom_command(TARGET OpenGL POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/data
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${PROJECT_BINARY_DIR}/.
+        )
