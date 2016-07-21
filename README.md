@@ -7,6 +7,7 @@ Requires CMake, GLFW >= 3.2, OpenGL >= 3.3, A C++11 compiler
 $ git clone https://github.com/keringar/opengl
 $ cd ./opengl/bin
 $ cmake ..
+$ make
 $ ./OpenGL
 ```
 
