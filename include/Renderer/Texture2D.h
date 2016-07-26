@@ -2,11 +2,14 @@
 #define TEXTURE2D_H
 
 #include <glad/glad.h>
+#include <string>
 
 class Texture2D {
     public:
         //Sets default options
         Texture2D();
+        //Load texture from file
+        void load(std::string path);
         //Create and upload texture from byte array
         void upload(GLuint width, GLuint height, const unsigned char* data);
         //Use texture

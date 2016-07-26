@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef TILE_RENDERER_H
+#define TILE_RENDERER_H
 
 #include <vector>
 #include <Window.h>
@@ -7,25 +7,27 @@
 #include <Renderer/Texture2D.h>
 #include <glm/detail/type_mat4x4.hpp>
 
-class Renderer{
+class TileRenderer{
     public:
-    Renderer(const Window& m_window);
-        ~Renderer();
+        TileRenderer(const Window& m_window);
+        ~TileRenderer();
 
         //Copy constructor
-        Renderer(const Renderer& render);
+        TileRenderer(const TileRenderer& render);
 
         bool loadAll();
-        void submit();
         void issueRenderCommands(glm::mat4 view);
 
     private:
-        Shader m_shader;
         const Window& m_window;
-        Texture2D m_texture;
 
-        GLuint VAO;
-        int size;
+        Shader m_shader;
+
+        GLuint VAO, EBO, VBO;
+
+        constexpr static int tileMapWidth = 10;
+        constexpr static int tileMapHeight = 10;
+        std::array<std::array<int, tileMapWidth>, tileMapHeight> TileMap;
 };
 
 #endif

@@ -9,7 +9,7 @@ int main() {
     }
 
     //Initialize renderer
-    Renderer renderer(window);
+    TileRenderer renderer(window);
     if(!renderer.loadAll()){
         Log::log("Could not load resources");
         return -1;

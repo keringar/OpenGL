@@ -24,7 +24,7 @@ private:
  */
 class File {
 public:
-    static std::string readFile(const std::string& file_path);
+    static std::string readString(const std::string &file_path);
 
     static void writeFile(const std::string& file_path, const std::string& contents);
 };

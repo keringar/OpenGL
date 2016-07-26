@@ -54,7 +54,7 @@ void Log::log(const std::string &data, Channels c) {
 /*////////////
 //FILE CLASS//
 ////////////*/
-std::string File::readFile(const std::string& file_path) {
+std::string File::readString(const std::string &file_path) {
     std::ifstream in(file_path);
 
     std::stringstream buffer;

@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(Window& window, Input& input, Renderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
+Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
 
 }
 
@@ -32,6 +32,9 @@ void Game::HandleInput() {
             case Event::MOVE_LEFT:
                 m_camera.moveLeft();
                 break;
+            default:
+                //Do nothing
+                break;
         }
     }
 
@@ -43,6 +46,9 @@ void Game::HandleInput() {
             case Event::TOGGLE_FULLSCREEN:
                 m_window.toggleFullscreen();
                 break;
+            default:
+                //Do nothing
+                break;
         }
     }
 }
@@ -53,6 +59,5 @@ void Game::Update(double deltaTime) {
 }
 
 void Game::Render() {
-    m_renderer.submit();
     m_renderer.issueRenderCommands(m_camera.getViewMatrix());
 }
