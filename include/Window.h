@@ -30,8 +30,6 @@ public:
     void swap() const;
     void toggleFullscreen();
 
-    glm::mat4 getProjectionMatrix() const;
-
     static int width, height;
 
 private:

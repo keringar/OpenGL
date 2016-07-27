@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <Window.h>
+#include <Tilemap.h>
 #include <Renderer/Shader.h>
 #include <Renderer/Texture2D.h>
 #include <glm/detail/type_mat4x4.hpp>
@@ -16,18 +17,20 @@ class TileRenderer{
         TileRenderer(const TileRenderer& render);
 
         bool loadAll();
-        void issueRenderCommands(glm::mat4 view);
+        void loadTileMap(Tilemap& tilemap);
+        void render(glm::mat4 view, glm::mat4 perspective);
 
     private:
         const Window& m_window;
 
         Shader m_shader;
+        Texture2D m_texture;
 
-        GLuint VAO, EBO, VBO;
+        GLuint VAO;
+        GLuint VBO[1]; //Stores vertices and tex coords in separate buffers
 
-        constexpr static int tileMapWidth = 10;
-        constexpr static int tileMapHeight = 10;
-        std::array<std::array<int, tileMapWidth>, tileMapHeight> TileMap;
+        int tileMapWidth = 0;
+        int tileMapHeight = 0;
 };
 
 #endif

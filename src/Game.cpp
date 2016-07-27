@@ -1,7 +1,8 @@
 #include "Game.h"
 
 Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
-
+    Tilemap tilemap(512, 512);
+    m_renderer.loadTileMap(tilemap);
 }
 
 Game::~Game() {
@@ -10,6 +11,17 @@ Game::~Game() {
 
 bool Game::isRunning() {
     return m_window.isOpen();
+}
+
+void Game::Update(double deltaTime) {
+    //Call update on all game objects
+    m_camera.update(deltaTime);
+}
+
+void Game::Render() {
+    m_renderer.render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix());
+
+    m_window.swap();
 }
 
 void Game::HandleInput() {
@@ -32,6 +44,12 @@ void Game::HandleInput() {
             case Event::MOVE_LEFT:
                 m_camera.moveLeft();
                 break;
+            case Event::ZOOM_IN:
+                m_camera.zoomIn();
+                break;
+            case Event::ZOOM_OUT:
+                m_camera.zoomOut();
+                break;
             default:
                 //Do nothing
                 break;
@@ -51,13 +69,4 @@ void Game::HandleInput() {
                 break;
         }
     }
-}
-
-void Game::Update(double deltaTime) {
-    //Call update on all game objects
-    m_camera.update(deltaTime);
-}
-
-void Game::Render() {
-    m_renderer.issueRenderCommands(m_camera.getViewMatrix());
 }

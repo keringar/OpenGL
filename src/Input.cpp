@@ -14,6 +14,8 @@ Input::Input(GLFWwindow* window) : m_config{"keys"} {
     event_map.emplace(Event::MOVE_BACK, convertToKeyCode(m_config.getWithDefault("move_down", "S")));
     event_map.emplace(Event::MOVE_LEFT, convertToKeyCode(m_config.getWithDefault("move_left", "A")));
     event_map.emplace(Event::TOGGLE_FULLSCREEN, convertToKeyCode(m_config.getWithDefault("fullscreen", "F11")));
+    event_map.emplace(Event::ZOOM_IN, convertToKeyCode(m_config.getWithDefault("zoom_in", "=")));
+    event_map.emplace(Event::ZOOM_OUT, convertToKeyCode(m_config.getWithDefault("zoom_out", "-")));
 }
 
 Input::~Input() {

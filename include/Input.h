@@ -11,7 +11,9 @@ enum class Event {
     MOVE_RIGHT,
     MOVE_BACK,
     MOVE_LEFT,
-    TOGGLE_FULLSCREEN
+    TOGGLE_FULLSCREEN,
+    ZOOM_IN,
+    ZOOM_OUT
 };
 
 class Input {

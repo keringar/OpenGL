@@ -1,11 +1,11 @@
 #include "Window.h"
-#include <glm/gtc/matrix_transform.hpp>
 
 //Initialize static variables
 int Window::width = 0;
 int Window::height = 0;
 
 void GLFWError(int error, const char *description) {
+    Log::log(std::to_string(error));
     Log::log(description, Log::Channels::Error);
 }
 
@@ -117,8 +117,4 @@ void Window::toggleFullscreen() {
         glfwSetWindowMonitor(m_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
         glfwSetWindowSize(m_window, mode->width, mode->height);
     }
-}
-
-glm::mat4 Window::getProjectionMatrix() const {
-    return glm::perspective(90.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }

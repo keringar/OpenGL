@@ -8,15 +8,15 @@ int main() {
         return -1;
     }
 
+    //Initalize camera
+    Camera camera(window);
+
     //Initialize renderer
     TileRenderer renderer(window);
     if(!renderer.loadAll()){
         Log::log("Could not load resources");
         return -1;
     }
-
-    //Initalize camera
-    Camera camera;
 
     //Initialize audio
 
@@ -28,7 +28,7 @@ int main() {
     Game game(window, input, renderer, camera);
 
     //Delta time
-    const double timeDelta = 20.0 / 1000.0; //20 update ticks per second
+    const double timeDelta = 20.0 / 1000.0; // 20 update ticks per second
     double timeAccumulator = 0;
     double startTime = 0;
 
