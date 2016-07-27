@@ -27,7 +27,7 @@ class TileRenderer{
         Texture2D m_texture;
 
         GLuint VAO;
-        GLuint VBO[1]; //Stores vertices and tex coords in separate buffers
+        GLuint VBO[2]; //Stores vertices and tex coords in separate buffers
 
         int tileMapWidth = 0;
         int tileMapHeight = 0;

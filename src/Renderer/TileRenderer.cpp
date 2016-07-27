@@ -45,7 +45,7 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
     //Generate vertices
     std::vector<GLfloat> vertices;
     for(int i = 0; i < tileMapHeight; ++i){
-        for(int j = 0; j < 512; ++j){
+        for(int j = 0; j < tileMapWidth; ++j){
             //Bottom-left corner
             vertices.push_back(j);  // X
             vertices.push_back(i);  // Y
@@ -71,7 +71,7 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
     //Generate texture coords
     std::vector<GLfloat> texCoords;
     for(int i = 0; i < tileMapHeight; ++i){
-        for(int j = 0; j < 512; ++j){
+        for(int j = 0; j < tileMapWidth; ++j){
             //Bottom-left corner
             texCoords.push_back(j / (GLfloat)tileMapWidth);  // X
             texCoords.push_back(i / (GLfloat)tileMapHeight);  // Y
@@ -124,10 +124,11 @@ void TileRenderer::render(glm::mat4 view, glm::mat4 perspective) {
     m_shader.use();
     m_texture.bind();
 
-    glm::mat4 model = glm::scale(model, glm::vec3(15.0f / tileMapHeight, 15.0f / tileMapWidth, 1.0f));
+    glm::mat4 model;
+    model = glm::scale(model, glm::vec3(70.0f / tileMapHeight, 70.0f / tileMapWidth, 1.0f));
     m_shader.SetMatrix4("mvp", perspective * view * model);
 
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6 * tileMapWidth * tileMapHeight);
+    glDrawArrays(GL_TRIANGLES, 0, 6 * tileMapHeight * tileMapWidth);
     glBindVertexArray(0);
 }

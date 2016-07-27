@@ -27,7 +27,7 @@ void Camera::moveLeft(){
 
 void Camera::update(double deltaTime) {
     glm::normalize(velocity);
-    velocity = velocity * (GLfloat)(deltaTime * ACCEL_RATE) * (1 + (FOV - FOV_MIN));
+    velocity = velocity * (GLfloat)(deltaTime * ACCEL_RATE) * (1 + (FOV - FOV_MIN) * 2);
 
     if(!heldX){
         velocity.x += -velocity.x * DECCEL_RATE * deltaTime;
@@ -64,6 +64,6 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 glm::mat4 Camera::getViewMatrix() const {
-    glm::vec3 worldLocation = glm::vec3(position, 0.01f);
+    glm::vec3 worldLocation = glm::vec3(position, 1.0f); //0.01f
     return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Top down
 }
