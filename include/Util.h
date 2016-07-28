@@ -3,6 +3,28 @@
 
 #include <string>
 #include <map>
+#include <algorithm>
+
+class Util {
+public:
+    static std::string getTime(){
+        time_t _tm = time(nullptr);
+        struct tm *curTime = localtime(&_tm);
+        std::string day = std::to_string(curTime->tm_mday).append("-");
+        std::string month = std::to_string(curTime->tm_mon).append("-");
+        std::string year = std::to_string(curTime->tm_year + 1900);
+        std::string time = month.append(day.append(year));
+        std::string hourminsec = std::to_string(curTime->tm_hour).append(
+                std::to_string(curTime->tm_min).append(std::to_string(curTime->tm_sec)));
+        time.append(hourminsec);
+        return asctime(curTime);
+    }
+
+    static std::string replaceCharacter(std::string str, char removed, char replace){
+        std::replace(str.begin(), str.end(), removed, replace);
+        return str;
+    }
+};
 
 /*
  * Logging class
