@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
-    Tilemap tilemap(512, 512);
+    Tilemap tilemap(200, 160);
     m_renderer.loadTileMap(tilemap);
 }
 

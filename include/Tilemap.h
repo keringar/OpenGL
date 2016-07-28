@@ -8,7 +8,7 @@ class Tilemap {
 
         const int getWidth();
         const int getHeight();
-        const unsigned int getTileID(int x, int y);
+        const int getTileID(int x, int y);
 
     private:
         int m_tilemapWidth, m_tilemapHeight;

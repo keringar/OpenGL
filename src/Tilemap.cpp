@@ -17,6 +17,6 @@ const int Tilemap::getHeight() {
     return m_tilemapHeight;
 }
 
-const unsigned int Tilemap::getTileID(int x, int y){
+const int Tilemap::getTileID(int x, int y){
     return 0;
 }

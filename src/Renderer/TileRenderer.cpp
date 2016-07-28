@@ -4,14 +4,14 @@
 
 //Constructor
 TileRenderer::TileRenderer(const Window& window) : m_window{window} {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    //glEnable(GL_MULTISAMPLE);
+    glEnable(GL_MULTISAMPLE);
 
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 //Deconstructor
@@ -33,7 +33,7 @@ bool TileRenderer::loadAll(){
     std::string fragmentShader = File::readString("data/shaders/TerrainShader.frag");
     m_shader.compile(vertexShader, fragmentShader);
 
-    m_texture.load("data/texture.jpg");
+    m_texture.load("data/textureAtlas.png");
 
     return true;
 }
@@ -41,6 +41,8 @@ bool TileRenderer::loadAll(){
 void TileRenderer::loadTileMap(Tilemap& tilemap){
     tileMapHeight = tilemap.getHeight();
     tileMapWidth = tilemap.getWidth();
+    int textureAtlasWidth = m_texture.Width;
+    int textureAtlasHeight = m_texture.Height;
 
     //Generate vertices
     std::vector<GLfloat> vertices;
@@ -69,28 +71,36 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
     }
 
     //Generate texture coords
+    //Texture atlas is 8x8 with 64x64 size tiles
+    //Pixel size of 512 x 512
     std::vector<GLfloat> texCoords;
     for(int i = 0; i < tileMapHeight; ++i){
         for(int j = 0; j < tileMapWidth; ++j){
+            //X and Y are for the top left corner of the tile
+            int ID = tilemap.getTileID(j, i);
+
+            GLfloat x = 64.0f * (ID % (m_texture.Width / 64));
+            GLfloat y = 64.0f * (ID / (m_texture.Height / 64));
+
             //Bottom-left corner
-            texCoords.push_back(j / (GLfloat)tileMapWidth);  // X
-            texCoords.push_back(i / (GLfloat)tileMapHeight);  // Y
+            texCoords.push_back((x + 0.5f) / textureAtlasWidth);  // X
+            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);  // Y
             //Bottom-right corner
-            texCoords.push_back((j + 1) / (GLfloat)tileMapWidth);
-            texCoords.push_back(i / (GLfloat)tileMapHeight);
+            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);
             //Top-left corner
-            texCoords.push_back(j / (GLfloat)tileMapWidth);
-            texCoords.push_back((i + 1) / (GLfloat)tileMapHeight);
+            texCoords.push_back((x + 0.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 0.5f) / textureAtlasHeight);
 
             //Top-left corner
-            texCoords.push_back(j / (GLfloat)tileMapWidth);
-            texCoords.push_back((i + 1) / (GLfloat)tileMapHeight);
+            texCoords.push_back((x + 0.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 0.5f) / textureAtlasHeight);
             //Bottom-right corner
-            texCoords.push_back((j + 1) / (GLfloat)tileMapWidth);
-            texCoords.push_back(i / (GLfloat)tileMapHeight);
+            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);
             //Top-right corner
-            texCoords.push_back((j + 1) / (GLfloat)tileMapWidth);
-            texCoords.push_back((i + 1) / (GLfloat)tileMapHeight);
+            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 0.5f) / textureAtlasHeight);
         }
     }
 
@@ -125,7 +135,7 @@ void TileRenderer::render(glm::mat4 view, glm::mat4 perspective) {
     m_texture.bind();
 
     glm::mat4 model;
-    model = glm::scale(model, glm::vec3(70.0f / tileMapHeight, 70.0f / tileMapWidth, 1.0f));
+    model = glm::translate(model, glm::vec3(-(tileMapWidth / 2.0f), -(tileMapHeight / 2.0f), 1.0f));
     m_shader.SetMatrix4("mvp", perspective * view * model);
 
     glBindVertexArray(VAO);

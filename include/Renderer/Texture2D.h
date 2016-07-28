@@ -27,7 +27,6 @@ class Texture2D {
 
     private:
         GLuint ID;
-
 };
 
 #endif

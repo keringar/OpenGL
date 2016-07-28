@@ -27,7 +27,7 @@ void Camera::moveLeft(){
 
 void Camera::update(double deltaTime) {
     glm::normalize(velocity);
-    velocity = velocity * (GLfloat)(deltaTime * ACCEL_RATE) * (1 + (FOV - FOV_MIN) * 2);
+    velocity = velocity * (GLfloat)(deltaTime * ACCEL_RATE);
 
     if(!heldX){
         velocity.x += -velocity.x * DECCEL_RATE * deltaTime;
@@ -44,26 +44,26 @@ void Camera::update(double deltaTime) {
 }
 
 void Camera::zoomIn(){
-    FOV -= 0.05f;
+    ZOOM -= 2.0f;
 
-    if(FOV < FOV_MIN){
-        FOV = FOV_MIN;
+    if(ZOOM < ZOOM_MIN){
+        ZOOM = ZOOM_MIN;
     }
 }
 
 void Camera::zoomOut(){
-    FOV += 0.05f;
+    ZOOM += 2.0f;
 
-    if (FOV > FOV_MAX){
-        FOV = FOV_MAX;
+    if (ZOOM > ZOOM_MAX){
+        ZOOM = ZOOM_MAX;
     }
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
-    return glm::perspective(FOV, m_window.width / (GLfloat)m_window.height, 0.1f, 100.0f);
+    return glm::perspective(45.0f, m_window.width / (GLfloat)m_window.height, 0.1f, 510.0f);
 }
 
 glm::mat4 Camera::getViewMatrix() const {
-    glm::vec3 worldLocation = glm::vec3(position, 1.0f); //0.01f
+    glm::vec3 worldLocation = glm::vec3(position, ZOOM);
     return glm::lookAt(worldLocation, worldLocation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); //Top down
 }
