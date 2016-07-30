@@ -1,7 +1,9 @@
 #include "Game.h"
 
 Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
-    Tilemap tilemap(200, 160);
+    Tilemap tilemap(200, 160, 147124);
+    m_camera.setLimits(tilemap.getHeight(), tilemap.getWidth());
+    m_camera.setPosition(glm::vec3(tilemap.getWidth() / 2, tilemap.getHeight() / 2, 50.0f));
     m_renderer.loadTileMap(tilemap);
 }
 
@@ -18,7 +20,7 @@ void Game::Update(double deltaTime) {
     m_camera.update(deltaTime);
 }
 
-void Game::Render() {
+void Game::Render(){
     m_renderer.render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix());
 
     m_window.swap();

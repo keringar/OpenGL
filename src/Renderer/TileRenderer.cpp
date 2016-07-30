@@ -4,9 +4,7 @@
 
 //Constructor
 TileRenderer::TileRenderer(const Window& window) : m_window{window} {
-    glClearColor(0.529f, 0.808f, 0.922f, 1.0f);
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_MULTISAMPLE);
 
@@ -72,7 +70,6 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
 
     //Generate texture coords
     //Texture atlas is 8x8 with 64x64 size tiles
-    //Pixel size of 512 x 512
     std::vector<GLfloat> texCoords;
     for(int i = 0; i < tileMapHeight; ++i){
         for(int j = 0; j < tileMapWidth; ++j){
@@ -84,10 +81,10 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
 
             //Bottom-left corner
             texCoords.push_back((x + 0.5f) / textureAtlasWidth);  // X
-            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);  // Y
+            texCoords.push_back((y + 63.5f) / textureAtlasHeight);  // Y
             //Bottom-right corner
-            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
-            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);
+            texCoords.push_back((x + 63.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 63.5f) / textureAtlasHeight);
             //Top-left corner
             texCoords.push_back((x + 0.5f) / textureAtlasWidth);
             texCoords.push_back((y + 0.5f) / textureAtlasHeight);
@@ -96,10 +93,10 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
             texCoords.push_back((x + 0.5f) / textureAtlasWidth);
             texCoords.push_back((y + 0.5f) / textureAtlasHeight);
             //Bottom-right corner
-            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
-            texCoords.push_back((y + 64 - 0.5f) / textureAtlasHeight);
+            texCoords.push_back((x + 63.5f) / textureAtlasWidth);
+            texCoords.push_back((y + 63.5f) / textureAtlasHeight);
             //Top-right corner
-            texCoords.push_back((x + 64 - 0.5f) / textureAtlasWidth);
+            texCoords.push_back((x + 63.5f) / textureAtlasWidth);
             texCoords.push_back((y + 0.5f) / textureAtlasHeight);
         }
     }
@@ -135,7 +132,6 @@ void TileRenderer::render(glm::mat4 view, glm::mat4 perspective) {
     m_texture.bind();
 
     glm::mat4 model;
-    model = glm::translate(model, glm::vec3(-(tileMapWidth / 2.0f), -(tileMapHeight / 2.0f), 1.0f));
     m_shader.SetMatrix4("mvp", perspective * view * model);
 
     glBindVertexArray(VAO);
