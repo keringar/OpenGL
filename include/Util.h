@@ -8,6 +8,7 @@
 class Util {
 public:
     static std::string getTime(){
+		/*
         time_t _tm = time(nullptr);
         struct tm *curTime = localtime(&_tm);
         std::string day = std::to_string(curTime->tm_mday).append("-");
@@ -18,6 +19,8 @@ public:
                 std::to_string(curTime->tm_min).append(std::to_string(curTime->tm_sec)));
         time.append(hourminsec);
         return asctime(curTime);
+		*/
+		return "INVALID_TIME";
     }
 
     static std::string replaceCharacter(std::string str, char removed, char replace){

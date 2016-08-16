@@ -3,10 +3,9 @@
 
 #pragma once
 
-#include "setup.hpp"
 #include "type_vec.hpp"
 #ifdef GLM_SWIZZLE
-#	if GLM_HAS_ANONYMOUS_UNION
+#	if GLM_HAS_UNRESTRICTED_UNIONS
 #		include "_swizzle.hpp"
 #	else
 #		include "_swizzle_func.hpp"
@@ -27,7 +26,17 @@ namespace glm
 
 		// -- Data --
 
-#		if GLM_HAS_UNRESTRICTED_UNIONS
+#		if GLM_HAS_ALIGNED_TYPE
+#			if GLM_COMPILER & GLM_COMPILER_GCC
+#				pragma GCC diagnostic push
+#				pragma GCC diagnostic ignored "-Wpedantic"
+#			endif
+#			if GLM_COMPILER & GLM_COMPILER_CLANG
+#				pragma clang diagnostic push
+#				pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+#				pragma clang diagnostic ignored "-Wnested-anon-types"
+#			endif
+		
 			union
 			{
 				struct { T x, y, z, w;};
@@ -48,6 +57,13 @@ namespace glm
 					_GLM_SWIZZLE4_4_MEMBERS(T, P, glm::tvec4, s, t, p, q)
 #				endif//GLM_SWIZZLE
 			};
+
+#			if GLM_COMPILER & GLM_COMPILER_CLANG
+#				pragma clang diagnostic pop
+#			endif
+#			if GLM_COMPILER & GLM_COMPILER_GCC
+#				pragma GCC diagnostic pop
+#			endif
 #		else
 			union { T x, r, s; };
 			union { T y, g, t; };
@@ -57,7 +73,7 @@ namespace glm
 #			ifdef GLM_SWIZZLE
 				GLM_SWIZZLE_GEN_VEC_FROM_VEC4(T, P, tvec4, tvec2, tvec3, tvec4)
 #			endif//GLM_SWIZZLE
-#		endif//GLM_LANG
+#		endif
 
 		// -- Component accesses --
 
