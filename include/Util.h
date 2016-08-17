@@ -18,7 +18,7 @@ public:
         std::string hourminsec = std::to_string(curTime->tm_hour).append(
                 std::to_string(curTime->tm_min).append(std::to_string(curTime->tm_sec)));
         time.append(hourminsec);
-        return asctime(curTime);
+        //return asctime(curTime);
 		*/
 		return "INVALID_TIME";
     }
