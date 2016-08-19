@@ -2,7 +2,7 @@
 
 Requires CMake, OpenGL >= 3.3, A C++11 compiler
 
-#Linux / OSX
+#Linux / OSX / MSYS2
 ```bash
 $ git clone https://github.com/keringar/opengl --recursive
 $ mkdir opengl/build
