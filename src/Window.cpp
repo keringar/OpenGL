@@ -16,7 +16,7 @@ void framebufferResize(GLFWwindow* window, int width, int height) {
 }
 
 void Window::setGLOptions(){
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
     glEnable(GL_MULTISAMPLE);
 

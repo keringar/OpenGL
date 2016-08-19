@@ -1,14 +1,15 @@
 # OpenGL
 
-Requires CMake, GLFW >= 3.2, OpenGL >= 3.3, A C++11 compiler
+Requires CMake, OpenGL >= 3.3, A C++11 compiler
 
 #Linux / OSX
 ```bash
-$ git clone https://github.com/keringar/opengl
-$ cd ./opengl/bin
+$ git clone https://github.com/keringar/opengl --recursive
+$ mkdir opengl/build
+$ cd opengl/build
 $ cmake ..
-$ make
-$ ./OpenGL
+$ make -j
+$ ../bin/OpenGL
 ```
 
 #Screenshots

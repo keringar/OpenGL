@@ -7,7 +7,7 @@
 
 namespace Util {
     std::string getTime();
-    int randomInt();
+    int randomInt(int min = -2147483648, int max = 2147483648);
 };
 
 /*

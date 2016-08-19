@@ -18,12 +18,12 @@ std::string Util::getTime(){
     return std::string(buffer).append("\n");
 }
 
-int Util::randomInt() {
+int Util::randomInt(int min, int max) {
     static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
     static std::mt19937 generator(seed);
 
     //Defaults to all possible ints
-    std::uniform_int_distribution<int> dist(INT32_MIN, INT32_MAX);
+    std::uniform_int_distribution<int> dist(min, max);
     return dist(generator);
 }
 
