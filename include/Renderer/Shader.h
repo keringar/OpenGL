@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 class Shader {
     public:
@@ -13,7 +13,6 @@ class Shader {
             PROGRAM
         };
 
-        Shader() { };
         operator GLuint() const {
             return ID;
         }

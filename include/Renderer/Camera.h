@@ -20,7 +20,7 @@ class Camera {
         glm::mat4 getProjectionMatrix();
 
         void setPosition(glm::vec3 position);
-        void setLimits(int height, int width);
+        void setLimits(int originX, int originY, int height, int width);
 
     private:
         void checkWithinLimits();
@@ -34,7 +34,7 @@ class Camera {
 
         GLfloat ZOOM = 10.0f;
         GLfloat ZOOM_MAX = 100.0f;
-        GLfloat ZOOM_MIN = 1.0f;
+        GLfloat ZOOM_MIN = 10.0f;
 
         //Max distance from origin that camera can move
         GLint MAX_DIST_Y = 0;

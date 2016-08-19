@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Renderer/TileRenderer.h"
+#include "Renderer/TextRenderer.h"
 #include "Renderer/Camera.h"
 
 class Game {
@@ -23,8 +24,11 @@ public:
 private:
     Window& m_window;
     Input& m_input;
-    TileRenderer& m_renderer;
+    TileRenderer& m_terrainRenderer;
     Camera& m_camera;
+
+    TextRenderer m_textRenderer;
+    Tilemap m_tilemap;
 };
 
 #endif //GAME_H

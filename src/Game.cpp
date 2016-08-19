@@ -1,10 +1,10 @@
 #include "Game.h"
 
-Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_renderer{renderer}, m_camera(camera){
-    Tilemap tilemap(200, 160, 147124);
-    m_camera.setLimits(tilemap.getHeight(), tilemap.getWidth());
-    m_camera.setPosition(glm::vec3(tilemap.getWidth() / 2, tilemap.getHeight() / 2, 50.0f));
-    m_renderer.loadTileMap(tilemap);
+Game::Game(Window& window, Input& input, TileRenderer& renderer, Camera& camera) : m_window{window}, m_input{input}, m_terrainRenderer{renderer}, m_camera(camera){
+    m_tilemap = Tilemap(200, 160, Util::randomInt());
+    m_camera.setLimits(0, 0, m_tilemap.getHeight(), m_tilemap.getWidth());
+    m_camera.setPosition(glm::vec3(m_tilemap.getWidth() / 2, m_tilemap.getHeight() / 2, 50.0f));
+    m_terrainRenderer.loadTileMap(m_tilemap);
 }
 
 Game::~Game() {
@@ -21,7 +21,8 @@ void Game::Update(double deltaTime) {
 }
 
 void Game::Render(){
-    m_renderer.render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix());
+    m_terrainRenderer.render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix());
+    m_textRenderer.renderText(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), "Test");
 
     m_window.swap();
 }
@@ -64,7 +65,8 @@ void Game::HandleInput() {
                 m_window.close();
                 break;
             case Event::TOGGLE_FULLSCREEN:
-                m_window.toggleFullscreen();
+                Log::log(std::to_string(Util::randomInt()));
+                //m_window.toggleFullscreen();
                 break;
             default:
                 //Do nothing

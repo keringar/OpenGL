@@ -5,7 +5,7 @@ Camera::Camera(const Window& window) : m_window(window){
 
 }
 
-void Camera::setLimits(int height, int width) {
+void Camera::setLimits(int originX, int originY, int height, int width) {
     MAX_DIST_X = width;
     MAX_DIST_Y = height;
 }
@@ -16,7 +16,21 @@ void Camera::setPosition(glm::vec3 position) {
 }
 
 void Camera::checkWithinLimits(){
+    if(position.x < 0 && position.x < MAX_DIST_X){
+        position.x = 0;
+    }
 
+    if(position.x > MAX_DIST_X && position.x > 0){
+        position.x = MAX_DIST_X;
+    }
+
+    if(position.y < 0 && position.y < MAX_DIST_Y){
+        position.y = 0;
+    }
+
+    if(position.y > MAX_DIST_Y && position.y > 0){
+        position.y = MAX_DIST_Y;
+    }
 }
 
 void Camera::moveForward(){

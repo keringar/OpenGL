@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "glad/glad.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Util.h"
 
@@ -33,6 +33,8 @@ public:
     static int width, height;
 
 private:
+    void setGLOptions();
+
     GLFWwindow* m_window;
     Configuration m_config;
 };

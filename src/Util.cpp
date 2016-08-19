@@ -2,6 +2,31 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <ctime>
+#include <chrono>
+#include <random>
+
+/*///////////////
+//UTILITY CLASS//
+///////////////*/
+std::string Util::getTime(){
+    char buffer[20];
+
+    auto rawTime = time(nullptr);
+    auto timeInfo = localtime(&rawTime);
+    strftime(buffer, 80, "%c", timeInfo);
+    return std::string(buffer).append("\n");
+}
+
+int Util::randomInt() {
+    static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    static std::mt19937 generator(seed);
+
+    //Defaults to all possible ints
+    std::uniform_int_distribution<int> dist(INT32_MIN, INT32_MAX);
+    return dist(generator);
+}
+
 
 /*///////////////
 //LOGGING CLASS//
@@ -10,35 +35,33 @@ bool Log::firstRun = true;
 
 //Channels has a default parameter of none
 void Log::log(const std::string &data, Channels c) {
-    if (!data.empty()) {
-        if (firstRun) {
-            firstRun = false;
-            std::remove("output.log");
+    if (firstRun) {
+        firstRun = false;
+        std::remove("output.log");
 
-            Log::log(Util::getTime(), Log::Channels::None);
-        }
-
-        std::filebuf fb;
-        fb.open("output.log", std::ios::out | std::ios::app);
-        std::ostream os(&fb);
-
-        std::string modifier;
-        switch (c) {
-            case Channels::Error:
-                modifier = "[Error]";
-                break;
-            case Channels::Warning:
-                modifier = "[Warning]";
-                break;
-            default:
-                modifier = "";
-        }
-
-        os << modifier << data << "\n";
-        std::cout << modifier << data << "\n";
-
-        fb.close();
+        Log::log(Util::getTime(), Log::Channels::None);
     }
+
+    std::filebuf fb;
+    fb.open("output.log", std::ios::out | std::ios::app);
+    std::ostream os(&fb);
+
+    std::string modifier;
+    switch (c) {
+        case Channels::Error:
+            modifier = "[Error]";
+            break;
+        case Channels::Warning:
+            modifier = "[Warning]";
+            break;
+        default:
+            modifier = "";
+    }
+
+    os << modifier << data << "\n";
+    std::cout << modifier << data << "\n";
+
+    fb.close();
 }
 
 /*////////////
@@ -53,7 +76,7 @@ std::string File::readString(const std::string &file_path) {
     return buffer.str();
 }
 
-void File::writeFile(const std::string& file_path, const std::string& contents) {
+void File::writeFile(const std::string &file_path, const std::string &contents) {
     std::ofstream out(file_path);
 
     out << contents;
@@ -110,7 +133,7 @@ std::string Configuration::get(std::string key) {
 }
 
 std::string Configuration::getWithDefault(std::string key, std::string defaultValue) {
-    if(get(key) == "") {
+    if (get(key) == "") {
         return setValue(key, defaultValue);
     }
 

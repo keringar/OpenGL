@@ -7,7 +7,7 @@
     APIs: gl=3.3
     Profile: core
     Extensions:
-        
+
     Loader: False
     Local files: False
     Omit khrplatform: False
@@ -83,7 +83,7 @@ GLAPI struct gladGLversionStruct GLVersion;
 GLAPI int gladLoadGLLoader(GLADloadproc);
 
 #include <stddef.h>
-#include <KHR/khrplatform.h>
+#include "glad/KHR/khrplatform.h"
 
 #ifndef GLEXT_64_TYPES_DEFINED
 /* This code block is duplicated in glxext.h, so must be protected */

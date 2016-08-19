@@ -47,8 +47,6 @@ int main() {
         game.HandleInput();
 
         timeAccumulator += glfwGetTime() - startTime;
-
-        //Log::log(std::to_string(1 / (glfwGetTime() - startTime)));
     }
 
     return 0;

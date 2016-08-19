@@ -4,12 +4,7 @@
 
 //Constructor
 TileRenderer::TileRenderer(const Window& window) : m_window{window} {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    glEnable(GL_MULTISAMPLE);
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
 }
 
 //Deconstructor
@@ -80,8 +75,8 @@ void TileRenderer::loadTileMap(Tilemap& tilemap){
             GLfloat y = 64.0f * (ID / (m_texture.Height / 64));
 
             //Bottom-left corner
-            texCoords.push_back((x + 0.5f) / textureAtlasWidth);  // X
-            texCoords.push_back((y + 63.5f) / textureAtlasHeight);  // Y
+            texCoords.push_back((x + 0.5f) / textureAtlasWidth);   // X
+            texCoords.push_back((y + 63.5f) / textureAtlasHeight); // Y
             //Bottom-right corner
             texCoords.push_back((x + 63.5f) / textureAtlasWidth);
             texCoords.push_back((y + 63.5f) / textureAtlasHeight);

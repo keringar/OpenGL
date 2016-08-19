@@ -15,6 +15,18 @@ void framebufferResize(GLFWwindow* window, int width, int height) {
     Window::height = height;
 }
 
+void Window::setGLOptions(){
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+    glEnable(GL_MULTISAMPLE);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 Window::Window() : m_config{"config"} {
     glfwSetErrorCallback(GLFWError);
 }
@@ -88,6 +100,8 @@ bool Window::init() {
 
     glfwSetFramebufferSizeCallback(m_window, framebufferResize);
     glfwGetFramebufferSize(m_window, &Window::width, &Window::height);
+
+    setGLOptions();
 
     return true;
 }

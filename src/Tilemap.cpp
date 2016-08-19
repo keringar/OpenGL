@@ -1,14 +1,19 @@
 #include <Util.h>
 #include "Tilemap.h"
 
+Tilemap::Tilemap() {
+    m_tilemapHeight = 0;
+    m_tilemapWidth = 0;
+}
+
 Tilemap::Tilemap(int width, int height, int seed) {
     m_tilemapHeight = height;
     m_tilemapWidth = width;
 
-    m_noise = FastNoise(seed);
+    //m_noise = FastNoise(seed);
 }
 
-Tilemap::~Tilemap(){
+Tilemap::~Tilemap() {
 
 }
 
@@ -20,12 +25,10 @@ const int Tilemap::getHeight() {
     return m_tilemapHeight;
 }
 
-const int Tilemap::getTileID(int x, int y){
-    float noise = 100 * m_noise.GetSimplex(x, y);
+const int Tilemap::getTileID(int x, int y) {
+    return 0;
+}
 
-    if(noise < 20){
-        return 64;
-    } else {
-        return 0;
-    }
+void Tilemap::setTile(int x, int y, int tileID) {
+
 }
