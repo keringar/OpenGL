@@ -1,7 +1,7 @@
 #include <Game.h>
 
 int main() {
-    //Initialize window
+    //Initialize window, includes input
     Window window;
     if (!window.init()) {
         Log::log("Window failure, quitting");
@@ -21,11 +21,8 @@ int main() {
     //Initialize audio
 
 
-    //Initialize input
-    Input input(window);
-
-    //Pass window, renderer, audio and input to game
-    Game game(window, input, renderer, camera);
+    //Pass dependencies to game
+    Game game(window, renderer, camera);
 
     //Delta time
     const double timeDelta = 20.0 / 1000.0; // 20 update ticks per second
@@ -33,9 +30,21 @@ int main() {
     double startTime = 0;
 
     //Game Loop
-    while (game.isRunning()) {
+    while (window.isOpen()) {
         double currentTimeSimulated = 0;
         startTime = glfwGetTime();
+
+        window.pollEvents();
+        Event event;
+        while(window.getEvent(event)) {
+            if(event.type == Event::CLOSE && !event.repeat) {
+                window.close();
+            } else if(event.type == Event::TOGGLE_FULLSCREEN && !event.repeat) {
+                window.toggleFullscreen();
+            } else {
+                game.HandleInput(event);
+            }
+        }
 
         while(timeAccumulator >= timeDelta){
             game.Update(timeDelta);
@@ -44,7 +53,7 @@ int main() {
         }
 
         game.Render();
-        game.HandleInput();
+        window.swap();
 
         timeAccumulator += glfwGetTime() - startTime;
     }

@@ -1,48 +1,80 @@
-#include "Input.h"
+#include "Input/Input.h"
 
 //Define static variables
+Event::MouseMoveEvent Input::mouse_state;
 std::map<int, bool> Input::held_keys;
 std::map<int, bool> Input::pressed_keys;
-std::map<int, bool> Input::released_keys;
 
-Input::Input(GLFWwindow* window) : m_config{"keys"} {
+Input::Input(GLFWwindow *window) : m_window{window}, m_config{"keys"} {
     glfwSetKeyCallback(window, KeyboardCallback);
+    glfwSetCursorPosCallback(window, MousePositionCallback);
+    glfwSetMouseButtonCallback(window, MouseButtonCallback);
+    glfwSetScrollCallback(window, MouseScrollCallback);
 
-    event_map.emplace(Event::QUIT, convertToKeyCode(m_config.getWithDefault("quit", "ESCAPE")));
-    event_map.emplace(Event::MOVE_UP, convertToKeyCode(m_config.getWithDefault("move_up", "W")));
-    event_map.emplace(Event::MOVE_RIGHT, convertToKeyCode(m_config.getWithDefault("move_right", "D")));
-    event_map.emplace(Event::MOVE_BACK, convertToKeyCode(m_config.getWithDefault("move_down", "S")));
-    event_map.emplace(Event::MOVE_LEFT, convertToKeyCode(m_config.getWithDefault("move_left", "A")));
-    event_map.emplace(Event::TOGGLE_FULLSCREEN, convertToKeyCode(m_config.getWithDefault("fullscreen", "F11")));
-    event_map.emplace(Event::ZOOM_IN, convertToKeyCode(m_config.getWithDefault("zoom_in", "=")));
-    event_map.emplace(Event::ZOOM_OUT, convertToKeyCode(m_config.getWithDefault("zoom_out", "-")));
+    bindKey(m_config.get("quit", "ESCAPE"), Event::EventType::CLOSE);
+    bindKey(m_config.get("fullscreen", "F11"), Event::EventType::TOGGLE_FULLSCREEN);
+    bindKey(m_config.get("move_up", "W"), Event::GameType::MOVE_UP);
+    bindKey(m_config.get("move_down", "S"), Event::GameType::MOVE_DOWN);
+    bindKey(m_config.get("move_left", "A"), Event::GameType::MOVE_LEFT);
+    bindKey(m_config.get("move_right", "D"), Event::GameType::MOVE_RIGHT);
+    bindKey(m_config.get("zoom_in", "E"), Event::GameType::ZOOM_IN);
+    bindKey(m_config.get("zoom_out", "Q"), Event::GameType::ZOOM_OUT);
 }
 
-Input::~Input() {
-
-}
-
-void Input::handle_input(std::vector<Event>& heldKeys, std::vector<Event>& pressedKeys) {
+void Input::update() {
     glfwPollEvents();
 
-    for (const auto &pair : event_map) {
-        if (was_pressed(pair.second)) {
-            pressedKeys.push_back(pair.first);
+    Event mouseEvent;
+    mouseEvent.type = Event::MOUSE;
+    mouseEvent.mouse = mouse_state;
+    eventQueue.push_back(mouseEvent);
+
+    Event zoomEvent{Event::GAME};
+    if(mouseEvent.mouse.scrollOffset < 0){
+        zoomEvent.game.type = Event::GameType::ZOOM_OUT;
+        eventQueue.push_back(zoomEvent);
+        mouse_state.scrollOffset = 0;
+    }
+
+    if(mouseEvent.mouse.scrollOffset > 0){
+        zoomEvent.game.type = Event::GameType::ZOOM_IN;
+        eventQueue.push_back(zoomEvent);
+        mouse_state.scrollOffset = 0;
+    }
+
+    for (auto &pair : keyMap) {
+        if (was_pressed(pair.first)) {
+            eventQueue.push_back(pair.second);
+            eventQueue.back().repeat = false;
         }
-        if (is_held(pair.second)) {
-            heldKeys.push_back(pair.first);
+        if (is_held(pair.first)) {
+            eventQueue.push_back(pair.second);
+            eventQueue.back().repeat = true;
         }
     }
 
     clear_keys();
 }
 
-bool Input::is_held(int key) {
-    return held_keys[key];
+void Input::bindKey(std::string key, Event::EventType type) {
+    Event e;
+    e.type = type;
+    keyMap.emplace(convertToKeyCode(key), e);
 }
 
-bool Input::was_released(int key) {
-    return released_keys[key];
+void Input::bindKey(std::string key, Event::GameType eventType) {
+    Event e;
+    e.type = Event::GAME;
+    e.game.type = eventType;
+    keyMap.emplace(convertToKeyCode(key), e);
+}
+
+void Input::unbindKey(std::string key) {
+    keyMap.erase(keyMap.find(convertToKeyCode(key)));
+}
+
+bool Input::is_held(int key) {
+    return held_keys[key];
 }
 
 bool Input::was_pressed(int key) {
@@ -51,7 +83,6 @@ bool Input::was_pressed(int key) {
 
 void Input::clear_keys() {
     pressed_keys.clear();
-    released_keys.clear();
 }
 
 void Input::KeyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -59,12 +90,24 @@ void Input::KeyboardCallback(GLFWwindow *window, int key, int scancode, int acti
         pressed_keys[key] = true;
         held_keys[key] = true;
     } else if (action == GLFW_RELEASE) {
-        released_keys[key] = true;
         held_keys[key] = false;
     }
 }
 
-//Make better
+void Input::MousePositionCallback(GLFWwindow *window, double xPos, double yPos) {
+    mouse_state.x = xPos;
+    mouse_state.y = yPos;
+}
+
+void Input::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+
+}
+
+void Input::MouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
+    mouse_state.scrollOffset = yOffset;
+}
+
+//TODO: Make better
 int Input::convertToKeyCode(std::string key) {
     if (key == "SPACE") {
         return 32;

@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 project(OpenGL)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -Wall -Werror -std=c++14")
-set(SOURCE_FILES)
+list(APPEND CMAKE_CXX_FLAGS "-static -Wall -Werror -std=c++14")
+list(APPEND CMAKE_EXE_LINKER_FLAGS "")
 
 if(WIN32)
 	#Hide console window
@@ -11,7 +11,7 @@ if(WIN32)
 endif()
 
 #Project sources
-list(APPEND SOURCE_FILES src/main.cpp src/Util.cpp src/Window.cpp src/Game.cpp src/Input.cpp src/Tilemap.cpp)
+list(APPEND SOURCE_FILES src/main.cpp src/Util.cpp src/Window.cpp src/Game.cpp src/Input/Input.cpp src/Tilemap.cpp)
 list(APPEND SOURCE_FILES src/Renderer/Camera.cpp src/Renderer/Shader.cpp  src/Renderer/TextRenderer.cpp src/Renderer/Texture2D.cpp src/Renderer/TileRenderer.cpp)
 add_executable(OpenGL ${SOURCE_FILES})
 

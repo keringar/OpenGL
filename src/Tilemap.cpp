@@ -1,4 +1,3 @@
-#include <Util.h>
 #include "Tilemap.h"
 
 Tilemap::Tilemap() {
@@ -9,8 +8,6 @@ Tilemap::Tilemap() {
 Tilemap::Tilemap(int width, int height, int seed) {
     m_tilemapHeight = height;
     m_tilemapWidth = width;
-
-    //m_noise = FastNoise(seed);
 }
 
 Tilemap::~Tilemap() {

@@ -9,7 +9,7 @@
 /*///////////////
 //UTILITY CLASS//
 ///////////////*/
-std::string Util::getTime(){
+std::string Util::getTime() {
     char buffer[20];
 
     auto rawTime = time(nullptr);
@@ -132,7 +132,7 @@ std::string Configuration::get(std::string key) {
     return options[key];
 }
 
-std::string Configuration::getWithDefault(std::string key, std::string defaultValue) {
+std::string Configuration::get(std::string key, std::string defaultValue){
     if (get(key) == "") {
         return setValue(key, defaultValue);
     }
@@ -159,6 +159,8 @@ int Configuration::getAsInt(std::string key) {
         setValue(key, "-1");
         return -1;
     }
+
+    return -1;
 }
 
 bool Configuration::getAsBool(std::string key) {

@@ -3,6 +3,9 @@
 
 #include "Window.h"
 
+#include <glm/glm.hpp>
+#include <glm/detail/type_mat.hpp>
+
 class Camera {
     public:
         Camera(const Window& window);
@@ -30,8 +33,8 @@ class Camera {
         glm::vec2 acceleration, velocity, position;
         bool heldX, heldY;
 
-        const GLfloat ACCEL_RATE = 5.0f; //Default: 10.0f
-
+        GLfloat desiredZoom;
+        GLfloat ZOOM_SENSITIVITY = 100.0f;
         GLfloat ZOOM = 10.0f;
         GLfloat ZOOM_MAX = 100.0f;
         GLfloat ZOOM_MIN = 10.0f;

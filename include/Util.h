@@ -63,8 +63,7 @@ public:
     std::string setValue(std::string key, std::string value);
 
     std::string get(std::string key);
-
-    std::string getWithDefault(std::string key, std::string defaultValue);
+    std::string get(std::string key, std::string defaultValue);
 
     int getAsInt(std::string key);
 

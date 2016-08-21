@@ -3,10 +3,11 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Util.h"
 
-#include <glm/glm.hpp>
-#include <glm/detail/type_mat.hpp>
+#include "Util.h"
+#include "Input/Input.h"
+
+class Input;
 
 class Window {
 public:
@@ -30,6 +31,9 @@ public:
     void swap() const;
     void toggleFullscreen();
 
+    void pollEvents();
+    bool getEvent(Event& event);
+
     static int width, height;
 
 private:
@@ -37,6 +41,7 @@ private:
 
     GLFWwindow* m_window;
     Configuration m_config;
+    Input m_input;
 };
 
 #endif

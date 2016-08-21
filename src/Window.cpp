@@ -15,6 +15,10 @@ void framebufferResize(GLFWwindow* window, int width, int height) {
     Window::height = height;
 }
 
+void Window::pollEvents() {
+    m_input.update();
+}
+
 void Window::setGLOptions(){
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -27,7 +31,33 @@ void Window::setGLOptions(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-Window::Window() : m_config{"config"} {
+bool Window::getEvent(Event& event) {
+    if(!m_input.eventQueue.empty()){
+        auto currentEvent = m_input.eventQueue.back();
+
+        //Copy everything because vector.back returns a direct reference which gets in the way of deleting last element
+        event.type = currentEvent.type;
+        event.repeat = currentEvent.repeat;
+
+        if(event.type == Event::GAME){
+            event.game.type = currentEvent.game.type;
+        } else if(event.type == Event::MOUSE){
+            event.mouse.x = currentEvent.mouse.x;
+            event.mouse.y = currentEvent.mouse.y;
+        } else if(event.type == Event::RESIZE){
+            event.size.height = currentEvent.size.height;
+            event.size.width = currentEvent.size.width;
+        }
+
+        m_input.eventQueue.pop_back();
+
+        return true;
+    }
+
+    return false;
+}
+
+Window::Window() : m_config{"config"}, m_input{m_window}{
     glfwSetErrorCallback(GLFWError);
 }
 
@@ -36,7 +66,7 @@ Window::~Window() {
 }
 
 //Copy constructor
-Window::Window(const Window& win) : m_config{"config"} {
+Window::Window(const Window& win) : m_config{"config"}, m_input{m_window} {
     this->m_window = win.m_window;
 }
 
@@ -102,6 +132,8 @@ bool Window::init() {
     glfwGetFramebufferSize(m_window, &Window::width, &Window::height);
 
     setGLOptions();
+
+    m_input = Input(m_window);
 
     return true;
 }

@@ -1,5 +1,6 @@
 #include "Renderer/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 Camera::Camera(const Window& window) : m_window(window){
 
@@ -54,20 +55,17 @@ void Camera::moveLeft(){
 }
 
 void Camera::update(double deltaTime) {
-    GLfloat zoomFactor = (0.2f / (1 - (ZOOM / ZOOM_MAX)));
-    zoomFactor = std::min(zoomFactor, 4.0f);
-    zoomFactor = zoomFactor < 1 ? 1 : zoomFactor;
+    //Zoom
+    ZOOM += desiredZoom * deltaTime * ZOOM_SENSITIVITY;
+    ZOOM = glm::clamp(ZOOM, ZOOM_MIN, ZOOM_MAX);
+    desiredZoom = 0.0f;
 
+    //Scrolling
+    GLfloat scrollSpeed = (1 + ((ZOOM - ZOOM_MIN) / ZOOM_MAX)) * 3; //3 is scroll speed basically
     glm::normalize(velocity);
-    velocity = velocity * (GLfloat)(deltaTime * ACCEL_RATE * zoomFactor);
-
-    if(!heldX){
-        velocity.x += -velocity.x * ACCEL_RATE * deltaTime * zoomFactor;
-    }
-
-    if(!heldY){
-        velocity.y += -velocity.y * ACCEL_RATE * deltaTime * zoomFactor;
-    }
+    velocity = velocity * (GLfloat)(deltaTime * scrollSpeed);
+    velocity.x += (!heldX) ? -velocity.x * deltaTime * scrollSpeed : 0;
+    velocity.y += (!heldY) ? -velocity.y * deltaTime * scrollSpeed : 0;
 
     heldX = false;
     heldY = false;
@@ -77,20 +75,12 @@ void Camera::update(double deltaTime) {
     checkWithinLimits();
 }
 
-void Camera::zoomIn(){
-    ZOOM -= 0.5f;
-
-    if(ZOOM < ZOOM_MIN){
-        ZOOM = ZOOM_MIN;
-    }
+void Camera::zoomIn() {
+    desiredZoom = -1.5f;
 }
 
-void Camera::zoomOut(){
-    ZOOM += 0.5f;
-
-    if(ZOOM > ZOOM_MAX){
-        ZOOM = ZOOM_MAX;
-    }
+void Camera::zoomOut() {
+    desiredZoom = 1.5f;
 }
 
 //Only good when width > height
