@@ -9,15 +9,12 @@
 
 class Input {
 public:
+    Input();
     Input(GLFWwindow* window);
 
     void update();
 
     std::vector<Event> eventQueue;
-
-    void bindKey(std::string key, Event::EventType type);
-    void bindKey(std::string key, Event::GameType eventType);
-    void unbindKey(std::string key);
 
     static void KeyboardCallback(GLFWwindow *window, int key, int scancode, int actions, int mods);
     static void MousePositionCallback(GLFWwindow* window, double xPos, double yPos);
@@ -37,7 +34,6 @@ private:
 
     Configuration m_config;
 
-    static Event::MouseMoveEvent mouse_state;
     static std::map<int, bool> held_keys;
     static std::map<int, bool> pressed_keys;
 };
