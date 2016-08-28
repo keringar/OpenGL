@@ -2,19 +2,18 @@
 #define INPUT_H
 
 #include <vector>
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include "Util.h"
-#include "Input/Event.h"
+#include "EventDispatcher.h"
 
 class Input {
 public:
-    Input();
-    Input(GLFWwindow* window);
+    Input(GLFWwindow* window, EventDispatcher& dispatcher);
 
     void update();
 
-    std::vector<Event> eventQueue;
+    void setKey(std::string key, EventType type);
 
     static void KeyboardCallback(GLFWwindow *window, int key, int scancode, int actions, int mods);
     static void MousePositionCallback(GLFWwindow* window, double xPos, double yPos);
@@ -30,9 +29,11 @@ private:
 
     void clear_keys();
     int convertToKeyCode(std::string key);
-    std::map<int, Event> keyMap;
+
+    std::map<int, EventType> keyMap;
 
     Configuration m_config;
+    EventDispatcher& m_dispatcher;
 
     static std::map<int, bool> held_keys;
     static std::map<int, bool> pressed_keys;

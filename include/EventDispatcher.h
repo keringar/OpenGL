@@ -1,8 +1,7 @@
 #ifndef EVENT_DISPATCHER
 #define EVENT_DISPATCHER
 
-#include <vector>
-#include <map>
+#include <unordered_map>
 #include <functional>
 
 enum class EventType {
@@ -14,12 +13,18 @@ enum class EventType {
     ZOOM_OUT,
     TOGGLE_FULLSCREEN,
     RESIZE,
-    CLOSE
+    CLOSE,
+    UNBIND
 };
 
-struct Event {
-    EventType type;
+struct SizeData {
+    int width;
+    int height;
+};
+
+union Data {
     bool repeat;
+    SizeData size;
 };
 
 class EventDispatcher {
@@ -27,12 +32,19 @@ public:
     EventDispatcher();
 
     // No return value, no parameters
-    void bind(Event event, std::function<void (Event)> function);
+    void bind(EventType type, std::function<void (Data)> function);
 
-    void dispatch(Event event);
+    //Provides default event struct
+    //  Event.repeat = false
+    //  Event.size.width = 0;
+    //  Event.size.height = 0;
+    void dispatch(EventType type);
+    //Event union stores extra information, such as window resize values
+    void dispatch(EventType type, Data data);
 
 private:
-    std::map<Event, std::vector<std::function<void (Event)>>> m_callbackMap;
+    std::unordered_multimap<EventType, std::function<void(Data)>> m_callbackMap;
+
 };
 
 #endif

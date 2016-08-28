@@ -2,18 +2,31 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-Camera::Camera(const Window& window) : m_window(window){
-
+Camera::Camera(EventDispatcher& dispatcher) : m_dispatcher{dispatcher}{
+    m_dispatcher.bind(EventType::RESIZE, [=](Data data){ resizeCallback(data); });
+    m_dispatcher.bind(EventType::MOVE_UP, [=](Data data){ moveForward(); });
+    m_dispatcher.bind(EventType::MOVE_RIGHT, [=](Data data){ moveRight(); });
+    m_dispatcher.bind(EventType::MOVE_DOWN, [=](Data data){ moveBack(); });
+    m_dispatcher.bind(EventType::MOVE_LEFT, [=](Data data){ moveLeft(); });
+    m_dispatcher.bind(EventType::ZOOM_IN, [=](Data data){ zoomIn(); });
+    m_dispatcher.bind(EventType::ZOOM_OUT, [=](Data data){ zoomOut(); });
 }
 
-void Camera::setLimits(int originX, int originY, int height, int width) {
-    MAX_DIST_X = width;
-    MAX_DIST_Y = height;
-}
+void Camera::setPosition(float x, float y) {
+    this->position.x = x;
+    this->position.y = y;
 
-void Camera::setPosition(glm::vec3 position) {
-    this->position = position;
     checkWithinLimits();
+}
+
+void Camera::setLimits(int x, int y) {
+    MAX_DIST_X = x;
+    MAX_DIST_Y = y;
+}
+
+void Camera::resizeCallback(Data data) {
+    window_width = data.size.width;
+    window_height = data.size.height;
 }
 
 void Camera::checkWithinLimits(){
@@ -85,8 +98,8 @@ void Camera::zoomOut() {
 
 //Only good when width > height
 glm::mat4 Camera::getProjectionMatrix() {
-    GLfloat aspectratio = (GLfloat)m_window.width / m_window.height;
-    return glm::ortho(-aspectratio * ZOOM, aspectratio * ZOOM, -1.0f * ZOOM, 1.0f * ZOOM, 1.0f, 3.0f);
+    GLfloat aspectratio = (GLfloat)window_width / window_height;
+    return glm::ortho(-aspectratio * ZOOM, aspectratio * ZOOM, -ZOOM, ZOOM, 1.0f, 3.0f);
 }
 
 glm::mat4 Camera::getViewMatrix() {

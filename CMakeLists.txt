@@ -11,8 +11,8 @@ if(WIN32)
 endif()
 
 #Project sources
-list(APPEND SOURCE_FILES src/main.cpp src/Util.cpp src/Window.cpp src/Game.cpp src/Input/Input.cpp src/Tilemap.cpp)
-list(APPEND SOURCE_FILES src/Renderer/Camera.cpp src/Renderer/Shader.cpp  src/Renderer/TextRenderer.cpp src/Renderer/Texture2D.cpp src/Renderer/TileRenderer.cpp)
+list(APPEND SOURCE_FILES src/main.cpp src/Util.cpp src/Window.cpp src/Game.cpp src/Input.cpp src/Tilemap.cpp src/EventDispatcher.cpp)
+list(APPEND SOURCE_FILES src/Renderer/Camera.cpp src/Renderer/Shader.cpp  src/Renderer/TextRenderer.cpp src/Renderer/Texture2D.cpp src/Renderer/StaticRenderer.cpp)
 add_executable(OpenGL ${SOURCE_FILES})
 
 #Project includes

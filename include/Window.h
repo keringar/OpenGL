@@ -4,44 +4,41 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "EventDispatcher.h"
 #include "Util.h"
-#include "Input/Input.h"
 
 class Input;
 
 class Window {
 public:
-    Window();
+    //Constructor
+    Window(EventDispatcher& dispatcher);
+    //Destructor
     ~Window();
-
     //Copy constructor
     Window(const Window& win);
-
     //Copy assignment
     Window& operator=(const Window& win);
-
-    bool init();
-
+    //Automatic type conversion for glfw
     operator GLFWwindow*() const {
         return m_window;
     }
 
+    bool init();
+
     bool isOpen() const;
-    void close();
     void swap() const;
-    void toggleFullscreen();
-
-    void pollEvents();
-    bool getEvent(Event& event);
-
-    static int width, height;
 
 private:
     void setGLOptions();
+    void toggleFullscreen(Data data);
+
+    static void GLFWError(int error, const char* description);
+    static void GLFWWindowResize(GLFWwindow* window, int width, int height);
 
     GLFWwindow* m_window;
+    EventDispatcher& m_dispatcher;
     Configuration m_config;
-    Input m_input;
 };
 
 #endif

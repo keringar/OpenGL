@@ -1,21 +1,22 @@
-#include "Events/EventDispatcher.h"
+#include "EventDispatcher.h"
 
 EventDispatcher::EventDispatcher() {
 
 }
 
-void EventDispatcher::bind(Event event, std::function<void(Event)> function) {
-    auto iterator = m_callbackMap.find(event);
-    if(iterator != m_callbackMap.end()){
-        iterator->second.push_back(function);
-    }
+void EventDispatcher::bind(EventType type, std::function<void (Data)> function) {
+    m_callbackMap.emplace(type, function);
 }
 
-void EventDispatcher::dispatch(Event event) {
-    auto iterator = m_callbackMap.find(evet);
-    if(iterator != m_callbackMap.end()){
-        for(const auto& function : iterator->second){
-            function(event);
-        }
+void EventDispatcher::dispatch(EventType type) {
+    Data data = {};
+    dispatch(type, data);
+}
+
+void EventDispatcher::dispatch(EventType type, Data data) {
+    auto range = m_callbackMap.equal_range(type);
+
+    for(auto it = range.first; it != range.second; ++it){
+        it->second(data);
     }
 }

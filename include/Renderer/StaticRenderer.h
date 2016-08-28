@@ -8,17 +8,16 @@
 #include <Renderer/Texture2D.h>
 #include <glm/detail/type_mat4x4.hpp>
 
-class TileRenderer{
+class StaticRenderer{
     public:
-        TileRenderer(const Window& m_window);
-        ~TileRenderer();
+        StaticRenderer(const Window& m_window);
+        ~StaticRenderer();
 
         //Copy constructor
-        TileRenderer(const TileRenderer& render);
+        StaticRenderer(const StaticRenderer& render);
 
         bool loadAll();
-        void loadTileMap(Tilemap& tilemap);
-        void render(glm::mat4 view, glm::mat4 perspective);
+        void render(glm::mat4 view, glm::mat4 perspective, const Tilemap& map);
 
     private:
         const Window& m_window;
@@ -28,9 +27,6 @@ class TileRenderer{
 
         GLuint VAO;
         GLuint VBO[2]; //Stores vertices and tex coords in separate buffers
-
-        int tileMapWidth = 0;
-        int tileMapHeight = 0;
 };
 
 #endif

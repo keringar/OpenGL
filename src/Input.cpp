@@ -1,24 +1,49 @@
-#include "Input/Input.h"
+#include "Input.h"
 
 //Define static variables
 std::map<int, bool> Input::held_keys;
 std::map<int, bool> Input::pressed_keys;
 
-Input::Input() : m_config("keys"){
-
-}
-
-Input::Input(GLFWwindow *window) : m_window{window}, m_config{"keys"} {
+Input::Input(GLFWwindow* window, EventDispatcher& dispatcher) : m_config{"keys"}, m_dispatcher{dispatcher} {
     glfwSetKeyCallback(window, KeyboardCallback);
     glfwSetCursorPosCallback(window, MousePositionCallback);
     glfwSetMouseButtonCallback(window, MouseButtonCallback);
     glfwSetScrollCallback(window, MouseScrollCallback);
+
+    setKey("ESCAPE", EventType::CLOSE);
+    setKey("F11", EventType::TOGGLE_FULLSCREEN);
+    setKey("W", EventType::MOVE_UP);
+    setKey("S", EventType::MOVE_DOWN);
+    setKey("A", EventType::MOVE_LEFT);
+    setKey("D", EventType::MOVE_RIGHT);
+    setKey("Q", EventType::ZOOM_OUT);
+    setKey("E", EventType::ZOOM_IN);
 }
 
 void Input::update() {
     glfwPollEvents();
 
+    for(auto& pair : keyMap){
+        if(is_held(pair.first)){
+            m_dispatcher.dispatch(pair.second, Data{true});
+        }
+
+        if(was_pressed(pair.first)){
+            m_dispatcher.dispatch(pair.second, Data{false});
+        }
+    }
+
     clear_keys();
+}
+
+void Input::setKey(std::string key, EventType type) {
+    int keycode = convertToKeyCode(key);
+    if(keycode != -1){
+        keyMap.emplace(keycode, type);
+        if(type == EventType::UNBIND) {
+            keyMap.erase(keyMap.find(keycode));
+        }
+    }
 }
 
 bool Input::is_held(int key) {
