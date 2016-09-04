@@ -18,11 +18,6 @@ add_executable(OpenGL ${SOURCE_FILES})
 #Project includes
 target_include_directories(OpenGL PUBLIC include)
 
-#Build OpenAL-soft
-add_subdirectory(deps/OpenAL)
-target_include_directories(OpenGL SYSTEM PUBLIC deps/openal-soft/include)
-target_link_libraries(OpenGL )
-
 #Build GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -40,3 +35,14 @@ target_include_directories(OpenGL SYSTEM PUBLIC deps/glm)
 
 #STB HEADERS
 target_include_directories(OpenGL SYSTEM PUBLIC deps/stb)
+
+#Build OpenAL-soft
+set(ALSOFT_UTILS OFF CACHE BOOL "" FORCE)
+set(ALSOFT_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(ALSOFT_TESTS OFF CACHE BOOL "" FORCE)
+set(ALSOFT_CONFIG OFF CACHE BOOL "" FORCE)
+set(ALSOFT_INSTALL OFF CACHE BOOL "" FORCE)
+set(ALSOFT_STATIC_LIBGCC ON CACHE BOOL "" FORCE)
+set(ALSOFT_EMBED_HRTF_DATA ON CACHE BOOL "" FORCE)
+target_include_directories(OpenGL SYSTEM PUBLIC deps/openal-soft/include)
+target_link_libraries(OpenGL openal)
