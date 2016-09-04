@@ -1,0 +1,8 @@
+TODO:
+
+- Click and Drag camera movement
+- Sounds
+- Sprites
+- Textures
+- Procedural Terrain
+- Text Rendering with Signed Distance Fields
