@@ -2,12 +2,12 @@
 #define OPENGL_TILEMAP_H
 
 #include <glad/glad.h>
+#include "Util.h"
 
 class Tilemap {
     public:
-        Tilemap();
         Tilemap(int width, int height, int seed);
-        ~Tilemap();
+        Tilemap(const Tilemap& other) : VAO{other.VAO}, VBO{other.VBO[0], other.VBO[1]}, m_tilemapWidth{other.m_tilemapWidth}, m_tilemapHeight{other.m_tilemapHeight}, m_seed{other.m_seed} { }
 
         const int getWidth() const;
         const int getHeight() const;
@@ -18,12 +18,10 @@ class Tilemap {
         const GLuint getMesh() const;
 
     private:
-        //FastNoise m_noise;
-
         GLuint VAO;
         GLuint VBO[2];
 
-        int m_tilemapWidth, m_tilemapHeight;
+        int m_tilemapWidth, m_tilemapHeight, m_seed;
 };
 
 #endif //OPENGL_TILEMAP_H

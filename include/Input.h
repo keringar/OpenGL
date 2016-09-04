@@ -1,19 +1,22 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <vector>
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include "Util.h"
 #include "EventDispatcher.h"
+#include "Util.h"
+
+class Window;
 
 class Input {
 public:
-    Input(GLFWwindow* window, EventDispatcher& dispatcher);
+    Input(const Window& window, EventDispatcher& dispatcher);
 
     void update();
 
     void setKey(std::string key, EventType type);
+    void clearKeys();
 
     static void KeyboardCallback(GLFWwindow *window, int key, int scancode, int actions, int mods);
     static void MousePositionCallback(GLFWwindow* window, double xPos, double yPos);
@@ -21,16 +24,13 @@ public:
     static void MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 private:
-    GLFWwindow* m_window;
-
     bool is_held(int key);
     bool was_released(int key);
     bool was_pressed(int key);
 
-    void clear_keys();
     int convertToKeyCode(std::string key);
 
-    std::map<int, EventType> keyMap;
+    std::map<int, EventType> m_keyMap;
 
     Configuration m_config;
     EventDispatcher& m_dispatcher;

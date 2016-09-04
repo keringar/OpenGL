@@ -8,6 +8,8 @@
 
 class Shader {
     public:
+        Shader();
+
         enum class ShaderType{
             SHADER,
             PROGRAM

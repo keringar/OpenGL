@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 project(OpenGL)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
-list(APPEND CMAKE_CXX_FLAGS "-static -Wall -Wextra -Weffc++ -Werror -std=c++14")
+list(APPEND CMAKE_CXX_FLAGS "-static -Wall -Weffc++ -Werror -std=c++14")
 list(APPEND CMAKE_EXE_LINKER_FLAGS "")
 
 if(WIN32)

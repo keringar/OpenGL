@@ -2,6 +2,10 @@
 #include <Util.h>
 #include "Renderer/Shader.h"
 
+Shader::Shader() : ID{0}, uniform_location_cache{} {
+
+}
+
 void Shader::use() {
     glUseProgram(ID);
 }

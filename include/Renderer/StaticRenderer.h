@@ -24,9 +24,6 @@ class StaticRenderer{
 
         Shader m_shader;
         Texture2D m_texture;
-
-        GLuint VAO;
-        GLuint VBO[2]; //Stores vertices and tex coords in separate buffers
 };
 
 #endif

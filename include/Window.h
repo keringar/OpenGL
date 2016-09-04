@@ -15,10 +15,9 @@ public:
     Window(EventDispatcher& dispatcher);
     //Destructor
     ~Window();
-    //Copy constructor
-    Window(const Window& win);
-    //Copy assignment
-    Window& operator=(const Window& win);
+    //Prevent copy, cannot have two windows open at same time
+    Window(const Window& win) = delete;
+    Window& operator=(const Window& win) = delete;
     //Automatic type conversion for glfw
     operator GLFWwindow*() const {
         return m_window;

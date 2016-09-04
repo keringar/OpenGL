@@ -45,9 +45,8 @@ public:
     ~Configuration();
 
     //Copy constructor
-    Configuration(const Configuration &config) {
-        this->m_name = config.m_name;
-        this->options = config.options;
+    Configuration(const Configuration &config) : m_name{config.m_name}, options{config.options} {
+
     }
 
     //Copy assignment operator
@@ -82,11 +81,10 @@ public:
     }
 
 private:
-    std::map<std::string, std::string> options;
     std::string m_name;
+    std::map<std::string, std::string> options;
 
     void readConfig(std::string name);
-
     void writeConfig();
 };
 

@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window(EventDispatcher& dispatcher) : m_dispatcher{dispatcher}, m_config{"config"} {
+Window::Window(EventDispatcher& dispatcher) : m_window{}, m_dispatcher{dispatcher}, m_config("config") {
     glfwSetErrorCallback(GLFWError);
 
     m_dispatcher.bind(EventType::TOGGLE_FULLSCREEN, [=](Data data){ this->toggleFullscreen(data); });

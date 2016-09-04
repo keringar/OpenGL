@@ -1,29 +1,30 @@
 #include "Input.h"
+#include "Window.h"
 
 //Define static variables
 std::map<int, bool> Input::held_keys;
 std::map<int, bool> Input::pressed_keys;
 
-Input::Input(GLFWwindow* window, EventDispatcher& dispatcher) : m_config{"keys"}, m_dispatcher{dispatcher} {
+Input::Input(const Window& window, EventDispatcher& dispatcher) : m_keyMap{}, m_config{"keys"}, m_dispatcher{dispatcher} {
     glfwSetKeyCallback(window, KeyboardCallback);
     glfwSetCursorPosCallback(window, MousePositionCallback);
     glfwSetMouseButtonCallback(window, MouseButtonCallback);
     glfwSetScrollCallback(window, MouseScrollCallback);
 
-    setKey("ESCAPE", EventType::CLOSE);
-    setKey("F11", EventType::TOGGLE_FULLSCREEN);
-    setKey("W", EventType::MOVE_UP);
-    setKey("S", EventType::MOVE_DOWN);
-    setKey("A", EventType::MOVE_LEFT);
-    setKey("D", EventType::MOVE_RIGHT);
-    setKey("Q", EventType::ZOOM_OUT);
-    setKey("E", EventType::ZOOM_IN);
+    setKey(m_config.get("CLOSE", "ESCAPE"), EventType::CLOSE);
+    setKey(m_config.get("FULLSCREEN", "F11"), EventType::TOGGLE_FULLSCREEN);
+    setKey(m_config.get("MOVE_UP", "W"), EventType::MOVE_UP);
+    setKey(m_config.get("MOVE_DOWN", "S"), EventType::MOVE_DOWN);
+    setKey(m_config.get("MOVE_LEFT", "A"), EventType::MOVE_LEFT);
+    setKey(m_config.get("MOVE_RIGHT", "D"), EventType::MOVE_RIGHT);
+    setKey(m_config.get("ZOOM_OUT", "-"), EventType::ZOOM_OUT);
+    setKey(m_config.get("ZOOM_IN", "="), EventType::ZOOM_IN);
 }
 
 void Input::update() {
     glfwPollEvents();
 
-    for(auto& pair : keyMap){
+    for(auto& pair : m_keyMap){
         if(is_held(pair.first)){
             m_dispatcher.dispatch(pair.second, Data{true});
         }
@@ -33,17 +34,21 @@ void Input::update() {
         }
     }
 
-    clear_keys();
+    pressed_keys.clear();
 }
 
 void Input::setKey(std::string key, EventType type) {
     int keycode = convertToKeyCode(key);
     if(keycode != -1){
-        keyMap.emplace(keycode, type);
+        m_keyMap.emplace(keycode, type);
         if(type == EventType::UNBIND) {
-            keyMap.erase(keyMap.find(keycode));
+            m_keyMap.erase(m_keyMap.find(keycode));
         }
     }
+}
+
+void Input::clearKeys() {
+    m_keyMap.clear();
 }
 
 bool Input::is_held(int key) {
@@ -52,10 +57,6 @@ bool Input::is_held(int key) {
 
 bool Input::was_pressed(int key) {
     return pressed_keys[key];
-}
-
-void Input::clear_keys() {
-    pressed_keys.clear();
 }
 
 void Input::KeyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {

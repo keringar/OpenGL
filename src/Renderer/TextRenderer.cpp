@@ -1,6 +1,6 @@
 #include "Renderer/TextRenderer.h"
 
-TextRenderer::TextRenderer() {
+TextRenderer::TextRenderer() : m_textShader{}, m_glyphs{} {
     auto vertexShader = File::readString("data/shaders/TextShader.vert");
     auto fragmentShader = File::readString("data/shaders/TextShader.frag");
     m_textShader.compile(vertexShader, fragmentShader);

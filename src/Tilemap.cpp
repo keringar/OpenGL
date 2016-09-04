@@ -1,17 +1,7 @@
 #include "Tilemap.h"
 #include <vector>
 
-Tilemap::Tilemap() {
-    m_tilemapHeight = 0;
-    m_tilemapWidth = 0;
-}
-
-Tilemap::Tilemap(int width, int height, int seed) {
-    m_tilemapHeight = height;
-    m_tilemapWidth = width;
-}
-
-Tilemap::~Tilemap() {
+Tilemap::Tilemap(int width, int height, int seed) : VAO{0}, m_tilemapWidth{width}, m_tilemapHeight{height}, m_seed{seed} {
 
 }
 
@@ -24,7 +14,7 @@ const int Tilemap::getHeight() const {
 }
 
 const int Tilemap::getTileID(int x, int y) const {
-    return 5;
+    return 0;
 }
 
 void Tilemap::setTile(int x, int y, int tileID) {

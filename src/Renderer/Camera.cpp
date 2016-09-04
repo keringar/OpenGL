@@ -2,7 +2,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-Camera::Camera(EventDispatcher& dispatcher) : m_dispatcher{dispatcher}{
+Camera::Camera(EventDispatcher& dispatcher) : m_dispatcher{dispatcher}, acceleration{}, velocity{}, position{} {
+
     m_dispatcher.bind(EventType::RESIZE, [=](Data data){ resizeCallback(data); });
     m_dispatcher.bind(EventType::MOVE_UP, [=](Data data){ moveForward(); });
     m_dispatcher.bind(EventType::MOVE_RIGHT, [=](Data data){ moveRight(); });

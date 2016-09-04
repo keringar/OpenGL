@@ -3,8 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Texture2D::Texture2D() :     Width(0), Height(0), Internal_Format(GL_RGB), Image_Format(GL_RGB), Wrap_S(GL_REPEAT),
-                             Wrap_T(GL_REPEAT), Filter_Min(GL_NEAREST), Filter_Max(GL_LINEAR) {
+Texture2D::Texture2D() : Width(0), Height(0), Internal_Format(GL_RGB), Image_Format(GL_RGB), Wrap_S(GL_REPEAT),
+                         Wrap_T(GL_REPEAT), Filter_Min(GL_NEAREST), Filter_Max(GL_LINEAR), ID{0} {
 
     glGenTextures(1, &ID);
 

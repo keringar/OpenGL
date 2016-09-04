@@ -1,4 +1,5 @@
 #include "Util.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -59,7 +60,7 @@ void Log::log(const std::string &data, Channels c) {
     }
 
     os << modifier << data << "\n";
-    std::cout << modifier << data << "\n";
+    std::cout << modifier << data << std::endl;
 
     fb.close();
 }
@@ -85,7 +86,7 @@ void File::writeFile(const std::string &file_path, const std::string &contents) 
 /*/////////////////////
 //CONFIGURATION CLASS//
 /////////////////////*/
-Configuration::Configuration(std::string name) : m_name{name} {
+Configuration::Configuration(std::string name) : m_name{name}, options{} {
     readConfig(name);
 }
 

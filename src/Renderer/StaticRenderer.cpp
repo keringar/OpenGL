@@ -3,19 +3,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 //Constructor
-StaticRenderer::StaticRenderer(const Window& window) : m_window{window} {
+StaticRenderer::StaticRenderer(const Window& window) : m_window{window}, m_shader{}, m_texture{} {
 
 }
 
 //Deconstructor
 StaticRenderer::~StaticRenderer() {
     //Destroy texture, shader and model managers
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(2, VBO);
+
 }
 
 //Copy constructor
-StaticRenderer::StaticRenderer(const StaticRenderer& render) : m_window{render.m_window} {
+StaticRenderer::StaticRenderer(const StaticRenderer& render) : m_window{render.m_window}, m_shader{}, m_texture{} {
 
 }
 
