@@ -35,6 +35,7 @@ target_include_directories(OpenGL SYSTEM PUBLIC deps/glm)
 
 #STB HEADERS
 target_include_directories(OpenGL SYSTEM PUBLIC deps/stb)
+target_sources(OpenGL PUBLIC deps/stb/stb_vorbis.c)
 
 #Build OpenAL-soft
 set(ALSOFT_UTILS OFF CACHE BOOL "" FORCE)
